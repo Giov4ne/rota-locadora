@@ -1,10 +1,13 @@
 <template>
   <!-- <LoginForm></LoginForm> -->
-   <SigninForm></SigninForm>
+  <!-- <SigninForm></SigninForm> -->
+  <MyHeader></MyHeader>
 </template>
 
 <script>
-import SigninForm from './components/SigninForm.vue';
+import MyHeader from './components/MyHeader.vue';
+
+/* import SigninForm from './components/SigninForm.vue'; */
 
 /* import LoginForm from './components/LoginForm.vue'; */
 
@@ -12,7 +15,8 @@ export default {
   name: 'App',
   components: {
     /* LoginForm */
-    SigninForm
+    /* SigninForm */
+    MyHeader
   }
 }
 </script>
@@ -56,7 +60,7 @@ export default {
     align-items: center;
   }
 
-  .fa-car{
+  form .fa-car{
     color: #007DF0;
     font-size: 80px;
   }
