@@ -1,11 +1,12 @@
 <template>
   <!-- <LoginForm></LoginForm> -->
   <!-- <SigninForm></SigninForm> -->
-  <MyHeader></MyHeader>
+   <HomePage></HomePage>
 </template>
 
 <script>
-import MyHeader from './components/MyHeader.vue';
+import HomePage from './components/HomePage.vue';
+
 
 /* import SigninForm from './components/SigninForm.vue'; */
 
@@ -16,7 +17,7 @@ export default {
   components: {
     /* LoginForm */
     /* SigninForm */
-    MyHeader
+    HomePage
   }
 }
 </script>
