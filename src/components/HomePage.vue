@@ -89,14 +89,14 @@
                 </div>
                 <div class="custom-field">
                     <label for="plate">Placa</label>
-                    <input type="text" class="inputs" name="plate" placeholder="Digite a placa ou a cor do veículo">
+                    <input type="text" class="inputs" name="plate" placeholder="Digite a placa ou a cor do veículo" v-model="plateInput">
                 </div>
                 <div id="search-erase">
                     <button id="search-btn">
                         <span class="fa fa-search"></span>
                     </button>
                     <button id="erase-btn">
-                        <span class="fa fa-eraser"></span>
+                        <span class="fa fa-eraser" @click="erase"></span>
                     </button>
                 </div>
                 <span id="filter-btn" class="fa fa-filter"></span>
@@ -118,94 +118,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
+                    <tr v-for="(vehicle, index) in vehicles" :key="index">
+                        <td>{{ vehicle.plate }}</td>
+                        <td>{{ vehicle.brandModel }}</td>
+                        <td>{{ vehicle.year }}</td>
+                        <td>{{ vehicle.color }}</td>
+                        <td>{{ vehicle.purpose }}</td>
+                        <td>{{ vehicle.zero ? 'Sim' : 'Não' }}</td>
+                        <td>{{ vehicle.confortLevel }} <span class="fa fa-star"></span></td>
+                        <td>{{ vehicle.restingPlace }}</td>
+                        <td>
+                            <div class="options-dropdown-container" ref="dropdowns">
+                                <span class="ellipsis" @click="optionsToggleDropdown(index)">...</span>
+                                <div v-if="optionsIsOpen === index" class="options-dropdown">
+                                    <ul>
+                                        <li @click="vehicleDetails(vehicle)">Detalhes</li>
+                                        <li @click="editVehicle(vehicle)">Editar</li>
+                                        <li @click="deleteVehicle(vehicle)">Deletar</li>
+                                        <!-- 
+                                        <li @click="detalhes(item)">Detalhes</li>
+                                        <li @click="editar(item)">Editar</li>
+                                        <li @click="deletar(item)">Deletar</li> 
+                                        -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- plate: "ABC-1234", brandModel: "BMW Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418" -->
                     </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
-                    <tr>
-                        <td>ABC-1234</td>
-                        <td>BMW Série 3 Sport</td>
-                        <td>2021</td>
-                        <td>Preta</td>
-                        <td>Uso pessoal</td>
-                        <td>Sim</td>
-                        <td>5 <span class="fa fa-star"></span></td>
-                        <td>-26.278385, -48.865418</td>
-                        <td><span class="ellipsis">...</span></td>
-                    </tr>
+                    
+                        <!-- <td>
+                            <div class="options-dropdown-container">
+                                <span class="ellipsis" @click="optionsToggleDropdown">...</span>
+                                <div v-if="optionsIsOpen" class="options-dropdown">
+                                    <ul>
+                                        <li>Detalhes</li>
+                                        <li>Editar</li>
+                                        <li>Deletar</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td> -->
                 </tbody>
             </table>
         </main>
@@ -249,7 +202,26 @@ import MyHeader from './MyHeader.vue';
                     { label: "Uso pessoal", value: "personal-use" },
                     { label: "Veículo para locação", value: "vehicle-for-rent" },
                     { label: "Uso da empresa", value: "company-use" }
-                ]
+                ],
+                plateInput: '',
+                vehicles: [
+                    { plate: "ABC-1234", brandModel: "BMW Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+
+                    { plate: "ABC-1234", brandModel: "Chevrolet Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, restingPlace: "-26.278385, -48.865418"},
+
+                    { plate: "ABC-1234", brandModel: "Peugeot 208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, restingPlace: "-26.278385, -48.865418"},
+
+                    { plate: "ABC-1234", brandModel: "Audi A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+
+                    { plate: "ABC-1234", brandModel: "Jeep Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+
+                    { plate: "ABC-1234", brandModel: "Ford Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, restingPlace: "-26.278385, -48.865418"},
+
+                    { plate: "ABC-1234", brandModel: "Fiat Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+                    
+                    { plate: "ABC-1234", brandModel: "Ford KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, restingPlace: "-26.278385, -48.865418"}
+                ],
+                optionsIsOpen: null
             };
         },
         methods: {
@@ -276,6 +248,51 @@ import MyHeader from './MyHeader.vue';
 
             clearPurposeSelection(){
                 this.selectedPurpose = '';
+            },
+
+            clearPlateInput(){
+                this.plateInput = '';
+            },
+
+            erase(){
+                if(this.brandOptionsIsOpen)
+                    this.brandsToggleDropdown();
+                if(this.purposesIsOpen)
+                    this.purposesToggleDropdown();
+                
+                this.clearBrandsSelection();
+                this.clearPurposeSelection();
+                this.clearPlateInput();
+            },
+
+            optionsToggleDropdown(index){
+                if (this.optionsIsOpen === index) {
+                    this.optionsIsOpen = null;
+                    document.removeEventListener("click", this.closeDropdownOutside);
+                } else {
+                    this.optionsIsOpen = index;
+                    document.addEventListener("click", this.closeDropdownOutside);
+                }
+            },
+
+            closeDropdownOutside(event){
+                // Verifica se o clique foi fora de todos os dropdowns
+                if (!this.$refs.dropdowns.some((dropdown) => dropdown.contains(event.target))) {
+                    this.optionsIsOpen = null;
+                    document.removeEventListener("click", this.closeDropdownOutside);
+                }
+            },
+
+            vehicleDetails(vehicle) {
+                console.log("Detalhes de:", vehicle);
+            },
+
+            editVehicle(vehicle) {
+                console.log("Editando:", vehicle);
+            },
+
+            deleteVehicle(vehicle) {
+                console.log("Deletando:", vehicle);
             }
         }
     }
@@ -391,7 +408,7 @@ import MyHeader from './MyHeader.vue';
 
 
 
-    /* DROPDOWN MENU */
+    /* DROPDOWN MENUS */
     .dropdown {
         position: relative;
         display: inline-block;
@@ -531,7 +548,7 @@ import MyHeader from './MyHeader.vue';
         transform: scale(1.3);
     }
 
-    .dropdown-menu .dropdown-menu-content-purpose ul li{
+    .dropdown-menu .dropdown-menu-content-purpose ul li, .options-dropdown ul li{
         list-style: none;
         padding: 10px 15px;
         cursor: pointer;
@@ -540,6 +557,52 @@ import MyHeader from './MyHeader.vue';
             background-color: #F0F0F0;
         }
     }
+
+    .options-dropdown-container{
+        position: relative;
+        display: inline-block;
+    }
+
+    .options-dropdown{
+        position: absolute;
+        right: 5px;
+        width: 100px;
+        font-size: 14px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px #00000040;
+        z-index: 10;
+    }
+
+                        /* <div class="exit-dropdown-container">
+                                <img src="../assets/user.png" alt="user image" id="user-img" @click="exitToggleDropdown">
+                                <div v-if="exitIsOpen" class="exit-dropdown">
+                                    <span class="fa fa-right-from-bracket"></span>
+                                    <span>Sair</span>
+                                </div>
+                            </div>
+                            
+                            .exit-dropdown-container{
+                                position: relative;
+                                display: inline-block;
+                            }
+
+                            .exit-dropdown {
+                                position: absolute;
+                                right: 5px;
+                                width: 100px;
+                                font-size: 14px;
+                                background-color: #fff;
+                                padding: 12px;
+                                border-radius: 5px;
+                                box-shadow: 0 2px 4px #00000040;
+                                cursor: pointer;
+                                color: #E8363B;
+
+                                &:hover{
+                                    background-color: #d8d8d8;
+                                }
+                            } */
     
     .fade-enter-active, .fade-leave-active {
         transition: opacity 0.3s ease, transform 0.3s ease;
