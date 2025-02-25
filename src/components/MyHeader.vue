@@ -15,14 +15,31 @@
                 <p>Olá</p>
                 <p id="name">Maria Clara da Silva</p>
             </div>
-            <img src="../assets/user.png" alt="user image" id="user-img">
+            <div class="exit-dropdown-container">
+                <img src="../assets/user.png" alt="user image" id="user-img" @click="exitToggleDropdown">
+                <div v-if="exitIsOpen" class="exit-dropdown">
+                    <span class="fa fa-right-from-bracket"></span>
+                    <span>Sair</span>
+                </div>
+            </div>
         </div>
     </header>
 </template>
 
 <script>
     export default{
-        name: 'MyHeader'
+        name: 'MyHeader',
+        data(){
+            return{
+                exitIsOpen: false
+            }
+        },
+
+        methods:{
+            exitToggleDropdown(){
+                this.exitIsOpen = !this.exitIsOpen;
+            }
+        }
     }
 </script>
 
@@ -111,5 +128,32 @@
         border-radius: 100px;
         margin-left: 14px;
         cursor: pointer;
+    }
+
+    .exit-dropdown-container{
+        position: relative;
+        display: inline-block;
+    }
+
+    .exit-dropdown {
+        position: absolute;
+        right: 5px;
+        width: 100px;
+        font-size: 14px;
+        background-color: #fff;
+        padding: 12px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px #00000040;
+        cursor: pointer;
+        color: #E8363B;
+
+        &:hover{
+            background-color: #d8d8d8;
+        }
+    }
+
+    .exit-dropdown .fa-right-from-bracket{
+        margin-right: 5px;
+        font-size: 16px;
     }
 </style>
