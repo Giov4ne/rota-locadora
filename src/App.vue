@@ -88,7 +88,7 @@ export default {
     position: absolute;
     top: -8px;
     left: 8px;
-    background: #fff;
+    background-color: #fff;
     padding: 0 5px;
     font-size: 12px;
     color: #333;
