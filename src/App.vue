@@ -103,6 +103,10 @@ export default {
     &::placeholder{
         color: #A9A7A9;
     }
+
+    &:hover{
+      background-color: #f0f0f086;
+    }
   }
 
   .password-input{
