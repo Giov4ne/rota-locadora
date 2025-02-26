@@ -95,8 +95,8 @@
                     <button class="search-btn">
                         <span class="fa fa-search"></span>
                     </button>
-                    <button class="erase-btn">
-                        <span class="fa fa-eraser" @click="erase"></span>
+                    <button class="erase-btn" @click="erase">
+                        <span class="fa fa-eraser"></span>
                     </button>
                 </div>
                 <span class="fa fa-filter filter-btn"></span>
