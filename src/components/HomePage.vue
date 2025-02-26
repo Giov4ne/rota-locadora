@@ -92,14 +92,14 @@
                     <input type="text" class="inputs" name="plate" placeholder="Digite a placa ou a cor do veículo" v-model="plateInput">
                 </div>
                 <div id="search-erase">
-                    <button id="search-btn">
+                    <button class="search-btn">
                         <span class="fa fa-search"></span>
                     </button>
-                    <button id="erase-btn">
+                    <button class="erase-btn">
                         <span class="fa fa-eraser" @click="erase"></span>
                     </button>
                 </div>
-                <span id="filter-btn" class="fa fa-filter"></span>
+                <span class="fa fa-filter filter-btn"></span>
             </div>
         </section>
         <main>
@@ -164,23 +164,19 @@
                 </tbody>
             </table>
         </main>
-        <section class="pagination">
-            <button class="pagination-btns pagination-arrows arrow-blocked">&lt;</button>
-            <button class="pagination-btns selected-pagination">1</button>
-            <button class="pagination-btns">2</button>
-            <button class="pagination-btns">3</button>
-            <button class="pagination-btns pagination-arrows">></button>
-        </section>
+        <MyPagination></MyPagination>
     </div>
 </template>
 
 <script>
 import MyHeader from './MyHeader.vue';
+import MyPagination from './MyPagination.vue';
 
     export default{
         name: 'HomePage',
         components: {
-            MyHeader
+            MyHeader,
+            MyPagination
         },
         data() {
             return {
@@ -301,10 +297,6 @@ import MyHeader from './MyHeader.vue';
 </script>
 
 <style>
-    .container{
-        margin-top: 60px;
-        padding: 32px 27px;
-    }
 
     #register-and-filters{
         display: flex;
@@ -338,35 +330,6 @@ import MyHeader from './MyHeader.vue';
 
     #filters .custom-field{
         width: 255px;
-    }
-
-    #search-btn, #erase-btn{
-        font-size: 20px;
-        padding: 5px 8px;
-        border: 1px solid #d8d8d8;
-        background-color: #fff;
-        cursor: pointer;
-
-        &:hover{
-            background-color: #F0F0F0;
-        }
-    }
-
-    #search-btn{
-        border-radius: 5px 0 0 5px;
-        color: #007DF0;
-    }
-
-    #erase-btn{
-        border-radius: 0 5px 5px 0;
-        border-left: transparent;
-        color: #A9A7A9;
-    }
-
-    #filter-btn{
-        font-size: 25px;
-        color: #007DF0;
-        cursor: pointer;
     }
 
     table{
@@ -551,7 +514,6 @@ import MyHeader from './MyHeader.vue';
     }
 
     .dropdown-menu .dropdown-menu-content-purpose ul li, .options-dropdown ul li{
-        list-style: none;
         padding: 10px 15px;
         cursor: pointer;
 
@@ -613,36 +575,5 @@ import MyHeader from './MyHeader.vue';
     .fade-enter-from, .fade-leave-to {
         opacity: 0;
         transform: translateY(-10px);
-    }
-
-    .pagination{
-        display: flex;
-        justify-content: center;
-    }
-
-    .pagination-btns{
-        background-color: #fff;
-        border: none;
-        border-radius: 3px;
-        box-shadow: 0 4px 4px #00000040;
-        padding: 7px 12px;
-        font-size: 14px;
-        margin: 0 5px;
-        cursor: pointer;
-        color: #333;
-    }
-
-    .pagination-arrows{
-        color: #A9A7A9;
-        font-size: 16px;
-    }
-
-    .arrow-blocked{
-        color: #a9a7a983;
-    }
-
-    .selected-pagination{
-        background-color: #007DF0;
-        color: #fff;
     }
 </style>

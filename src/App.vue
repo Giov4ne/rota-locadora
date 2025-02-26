@@ -1,12 +1,13 @@
 <template>
   <!-- <LoginForm></LoginForm> -->
   <!-- <SigninForm></SigninForm> -->
-   <HomePage></HomePage>
+   <ActivityHistory></ActivityHistory>
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue';
+import ActivityHistory from './components/ActivityHistory.vue';
 
+/* import HomePage from './components/HomePage.vue'; */
 
 /* import SigninForm from './components/SigninForm.vue'; */
 
@@ -17,7 +18,8 @@ export default {
   components: {
     /* LoginForm */
     /* SigninForm */
-    HomePage
+    /* HomePage */
+    ActivityHistory
   }
 }
 </script>
@@ -150,5 +152,43 @@ export default {
     &:hover{
         text-decoration: underline;
     }
+  }
+  
+  .container{
+      margin-top: 60px;
+      padding: 32px 27px;
+  }
+
+  .search-btn, .erase-btn{
+      font-size: 20px;
+      padding: 5px 8px;
+      border: 1px solid #d8d8d8;
+      background-color: #fff;
+      cursor: pointer;
+
+      &:hover{
+        background-color: #F0F0F0;
+      }
+  }
+
+  .search-btn{
+      border-radius: 5px 0 0 5px;
+      color: #007DF0;
+  }
+
+  .erase-btn{
+      border-radius: 0 5px 5px 0;
+      border-left: transparent;
+      color: #A9A7A9;
+  }
+
+  .filter-btn{
+      font-size: 25px;
+      color: #007DF0;
+      cursor: pointer;
+  }
+
+  ul li{
+    list-style: none;
   }
 </style>
