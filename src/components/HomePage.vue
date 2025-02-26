@@ -130,18 +130,20 @@
                         <td>
                             <div class="options-dropdown-container" ref="dropdowns">
                                 <span class="ellipsis" @click="optionsToggleDropdown(index)">...</span>
-                                <div v-if="optionsIsOpen === index" class="options-dropdown">
-                                    <ul>
-                                        <li @click="vehicleDetails(vehicle)">Detalhes</li>
-                                        <li @click="editVehicle(vehicle)">Editar</li>
-                                        <li @click="deleteVehicle(vehicle)">Deletar</li>
-                                        <!-- 
-                                        <li @click="detalhes(item)">Detalhes</li>
-                                        <li @click="editar(item)">Editar</li>
-                                        <li @click="deletar(item)">Deletar</li> 
-                                        -->
-                                    </ul>
-                                </div>
+                                <transition name="fade">
+                                    <div v-if="optionsIsOpen === index" class="options-dropdown">
+                                        <ul>
+                                            <li @click="vehicleDetails(vehicle)">Detalhes</li>
+                                            <li @click="editVehicle(vehicle)">Editar</li>
+                                            <li @click="deleteVehicle(vehicle)">Deletar</li>
+                                            <!-- 
+                                            <li @click="detalhes(item)">Detalhes</li>
+                                            <li @click="editar(item)">Editar</li>
+                                            <li @click="deletar(item)">Deletar</li> 
+                                            -->
+                                        </ul>
+                                    </div>
+                                </transition>
                             </div>
                         </td>
                         <!-- plate: "ABC-1234", brandModel: "BMW Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418" -->

@@ -17,10 +17,12 @@
             </div>
             <div class="exit-dropdown-container">
                 <img src="../assets/user.png" alt="user image" id="user-img" @click="exitToggleDropdown">
-                <div v-if="exitIsOpen" class="exit-dropdown">
-                    <span class="fa fa-right-from-bracket"></span>
-                    <span>Sair</span>
-                </div>
+                <transition name="fade">
+                    <div v-if="exitIsOpen" class="exit-dropdown">
+                        <span class="fa fa-right-from-bracket"></span>
+                        <span>Sair</span>
+                    </div>
+                </transition>
             </div>
         </div>
     </header>
