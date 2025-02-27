@@ -4,89 +4,8 @@
         <section id="register-and-filters">
             <button id="register-vehicle-btn">Cadastrar Veículo</button>
             <div id="filters">
-                <!-- <div class="custom-field">
-                    <label for="mark">Marca</label>
-                    <input type="text" class="inputs" name="mark" placeholder="Selecione a marca do veículo">
-                </div> -->
-                <div class="dropdown custom-dropbox">
-                    <label>Marca</label>
-                    <button @click="brandsToggleDropdown" class="dropdown-button">
-                        <span v-if="selectedBrands.length === 0" class="dropdown-text">
-                            Selecione a marca do veículo
-                        </span>
-                        <span v-else class="dropdown-selected">
-                            <span class="dropdown-selected-container">
-                                <span class="dropdown-selected-text">{{ selectedBrands[0] }}</span> 
-                                <span class="close-selected" @click.stop="clearBrandsSelection">x</span>
-                            </span> 
-                            <span v-if="selectedBrands.length > 1" class="dropdown-text">
-                                (+{{ selectedBrands.length - 1 }})
-                            </span>
-                        </span>
-                        <span :class="{ 'rotate-up': brandOptionsIsOpen }" class="arrow"> <!-- Seta -->
-                            &#9660;
-                        </span>
-                    </button>
-                    <transition name="fade">
-                        <div v-if="brandOptionsIsOpen" class="dropdown-menu">
-                            <label class="dropdown-menu-title">Marca</label>
-                            <hr>
-                            <div class="dropdown-menu-content">
-                                <label v-for="option in brandOptions" :key="option.value">
-                                    <input
-                                    type="checkbox"
-                                    :value="option.label"
-                                    v-model="selectedBrands"
-                                    />
-                                    {{ option.label }}
-                                </label>
-                            </div>
-                        </div>
-                    </transition>
-                </div>
-                <!-- <div class="custom-field">
-                    <label for="use-purpose">Propósito de uso</label>
-                    <input type="text" class="inputs" name="use-purpose" placeholder="Selecione o propósito de uso">
-                </div> -->
-                <div class="dropdown custom-dropbox">
-                    <label>Propósito de uso</label>
-                    <button @click="purposesToggleDropdown" class="dropdown-button">
-                        <span v-if="selectedPurpose === ''" class="dropdown-text">
-                            Selecione o propósito de uso
-                        </span>
-                        <span v-else class="dropdown-selected">
-                            <span class="dropdown-selected-text">
-                                {{ selectedPurpose }}
-                            </span>
-                            <span class="close-selected" @click.stop="clearPurposeSelection">x</span>
-                        </span>
-                        <!-- <span v-else class="dropdown-selected">
-                            <span class="dropdown-selected-container">
-                                <span class="dropdown-selected-text">{{ selectedBrands[0] }}</span> 
-                                <span class="close-selected" @click.stop="clearSelection">x</span>
-                            </span> 
-                            <span v-if="selectedBrands.length > 1" class="dropdown-text">
-                                (+{{ selectedBrands.length - 1 }})
-                            </span>
-                        </span> -->
-                        <span :class="{ 'rotate-up': purposesIsOpen }" class="arrow"> <!-- Seta -->
-                            &#9660;
-                        </span>
-                    </button>
-                    <transition name="fade">
-                        <div v-if="purposesIsOpen" class="dropdown-menu">
-                            <label class="dropdown-menu-title">Propósito de uso</label>
-                            <hr>
-                            <div class="dropdown-menu-content-purpose">
-                                <ul>
-                                    <li v-for="purpose in purposesOfUse" :key="purpose.value" @click="selectPurposeOption(purpose)">
-                                        {{ purpose.label }}    
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </transition>
-                </div>
+                <BrandsDropdown ref="brandsDropdownRef"></BrandsDropdown>
+                <PurposesDropdown ref="purposesDropdownRef"></PurposesDropdown>
                 <div class="custom-field">
                     <label for="plate">Placa</label>
                     <input type="text" class="inputs" name="plate" placeholder="Digite a placa ou a cor do veículo" v-model="plateInput">
@@ -136,31 +55,12 @@
                                             <li @click="vehicleDetails(vehicle)">Detalhes</li>
                                             <li @click="editVehicle(vehicle)">Editar</li>
                                             <li @click="deleteVehicle(vehicle)">Deletar</li>
-                                            <!-- 
-                                            <li @click="detalhes(item)">Detalhes</li>
-                                            <li @click="editar(item)">Editar</li>
-                                            <li @click="deletar(item)">Deletar</li> 
-                                            -->
                                         </ul>
                                     </div>
                                 </transition>
                             </div>
                         </td>
-                        <!-- plate: "ABC-1234", brandModel: "BMW Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418" -->
                     </tr>
-                    
-                        <!-- <td>
-                            <div class="options-dropdown-container">
-                                <span class="ellipsis" @click="optionsToggleDropdown">...</span>
-                                <div v-if="optionsIsOpen" class="options-dropdown">
-                                    <ul>
-                                        <li>Detalhes</li>
-                                        <li>Editar</li>
-                                        <li>Deletar</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </td> -->
                 </tbody>
             </table>
         </main>
@@ -170,37 +70,20 @@
 
 <script>
 import MyHeader from './MyHeader.vue';
+import BrandsDropdown from './BrandsDropdown.vue';
+import PurposesDropdown from './PurposesDropdown.vue';
 import MyPagination from './MyPagination.vue';
 
     export default{
         name: 'HomePage',
         components: {
             MyHeader,
+            BrandsDropdown,
+            PurposesDropdown,
             MyPagination
         },
         data() {
             return {
-                brandOptionsIsOpen: false,
-                selectedBrands: [],
-                brandOptions: [
-                    { label: "Audi", value: "audi" },
-                    { label: "BMW", value: "bmw" },
-                    { label: "Chevrolet", value: "chevrolet" },
-                    { label: "Fiat", value: "fiat" },
-                    { label: "Ford", value: "ford" },
-                    { label: "Jeep", value: "jeep" },
-                    { label: "Mitsubishi", value: "mitsubishi" },
-                    { label: "Mercedes-Benz", value:  "mercedes-benz"},
-                    { label: "Peugeot", value: "peugeot" },
-                    { label: "Volkswagen", value: "volkswagen" }
-                ],
-                purposesIsOpen: false,
-                selectedPurpose: '',
-                purposesOfUse: [
-                    { label: "Uso pessoal", value: "personal-use" },
-                    { label: "Veículo para locação", value: "vehicle-for-rent" },
-                    { label: "Uso da empresa", value: "company-use" }
-                ],
                 plateInput: '',
                 vehicles: [
                     { plate: "ABC-1234", brandModel: "BMW Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
@@ -223,43 +106,18 @@ import MyPagination from './MyPagination.vue';
             };
         },
         methods: {
-            brandsToggleDropdown(){
-                if(this.purposesIsOpen)
-                    this.purposesToggleDropdown();
-                this.brandOptionsIsOpen = !this.brandOptionsIsOpen;
-            },
-
-            purposesToggleDropdown(){
-                if(this.brandOptionsIsOpen)
-                    this.brandsToggleDropdown();
-                this.purposesIsOpen = !this.purposesIsOpen;
-            },
-
-            selectPurposeOption(purpose){
-                this.selectedPurpose = purpose.label; // Atualiza a variável com o valor do item clicado
-                this.purposesIsOpen = false;
-            },
-            
-            clearBrandsSelection(){
-                this.selectedBrands = [];
-            },
-
-            clearPurposeSelection(){
-                this.selectedPurpose = '';
-            },
-
             clearPlateInput(){
                 this.plateInput = '';
             },
 
             erase(){
-                if(this.brandOptionsIsOpen)
+                /* if(this.brandOptionsIsOpen)
                     this.brandsToggleDropdown();
                 if(this.purposesIsOpen)
-                    this.purposesToggleDropdown();
+                    this.purposesToggleDropdown(); */
                 
-                this.clearBrandsSelection();
-                this.clearPurposeSelection();
+                this.$refs.brandsDropdownRef.clearBrandsSelection();
+                this.$refs.purposesDropdownRef.clearPurposeSelection();
                 this.clearPlateInput();
             },
 
@@ -537,36 +395,6 @@ import MyPagination from './MyPagination.vue';
         box-shadow: 0 2px 4px #00000040;
         z-index: 10;
     }
-
-                        /* <div class="exit-dropdown-container">
-                                <img src="../assets/user.png" alt="user image" id="user-img" @click="exitToggleDropdown">
-                                <div v-if="exitIsOpen" class="exit-dropdown">
-                                    <span class="fa fa-right-from-bracket"></span>
-                                    <span>Sair</span>
-                                </div>
-                            </div>
-                            
-                            .exit-dropdown-container{
-                                position: relative;
-                                display: inline-block;
-                            }
-
-                            .exit-dropdown {
-                                position: absolute;
-                                right: 5px;
-                                width: 100px;
-                                font-size: 14px;
-                                background-color: #fff;
-                                padding: 12px;
-                                border-radius: 5px;
-                                box-shadow: 0 2px 4px #00000040;
-                                cursor: pointer;
-                                color: #E8363B;
-
-                                &:hover{
-                                    background-color: #d8d8d8;
-                                }
-                            } */
     
     .fade-enter-active, .fade-leave-active {
         transition: opacity 0.3s ease, transform 0.3s ease;

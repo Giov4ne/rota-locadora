@@ -1,13 +1,14 @@
 <template>
   <!-- <LoginForm></LoginForm> -->
   <!-- <SigninForm></SigninForm> -->
-   <ActivityHistory></ActivityHistory>
+   <HomePage></HomePage>
+  <!-- <ActivityHistory></ActivityHistory> -->
 </template>
 
 <script>
-import ActivityHistory from './components/ActivityHistory.vue';
+/* import ActivityHistory from './components/ActivityHistory.vue'; */
 
-/* import HomePage from './components/HomePage.vue'; */
+import HomePage from './components/HomePage.vue';
 
 /* import SigninForm from './components/SigninForm.vue'; */
 
@@ -18,8 +19,8 @@ export default {
   components: {
     /* LoginForm */
     /* SigninForm */
-    /* HomePage */
-    ActivityHistory
+    HomePage
+    /* ActivityHistory */
   }
 }
 </script>
