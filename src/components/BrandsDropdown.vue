@@ -2,7 +2,15 @@
     <div class="dropdown custom-dropbox">
         <label>Marca</label>
         <button class="dropdown-button" @click="brandsToggleDropdown">
-            <span v-if="selectedBrands.length === 0" class="dropdown-text">
+            <span v-if="!checkbox" class="dropdown-selected">
+                <span v-if="selectedBrand !== ''" class="dropdown-selected-text">
+                    {{ selectedBrand }}
+                </span>
+                <span v-else class="dropdown-text">
+                    Selecione a marca do veículo
+                </span>
+            </span>
+            <span v-else-if="selectedBrands.length === 0" class="dropdown-text">
                 Selecione a marca do veículo
             </span>
             <span v-else class="dropdown-selected">
@@ -23,14 +31,21 @@
                 <label class="dropdown-menu-title">Marca</label>
                 <hr>
                 <div class="dropdown-menu-content">
-                    <label v-for="option in brandOptions" :key="option.value">
-                        <input
-                            type="checkbox"
-                            :value="option.label"
-                            v-model="selectedBrands"
-                        />
-                        {{ option.label }}
-                    </label>
+                    <div v-if="checkbox">
+                        <label v-for="brand in brandOptions" :key="brand.value">
+                            <input 
+                                type="checkbox"
+                                :value="brand.label"
+                                v-model="selectedBrands"
+                            />
+                            {{ brand.label }}
+                        </label>
+                    </div>
+                    <ul v-else class="dropdown-menu-content-brand">
+                        <li v-for="brand in brandOptions" :key="brand.value" @click="selectBrandOption(brand)">
+                            {{ brand.label }}    
+                        </li>
+                    </ul>
                 </div>
             </div>
         </transition>
@@ -40,10 +55,14 @@
 <script>
     export default{
         name: 'BrandsDropdown',
+        props:{
+            checkbox: Boolean
+        },
         data(){
             return{
                 brandOptionsIsOpen: false,
                 selectedBrands: [],
+                selectedBrand: '',
                 brandOptions: [
                     { label: "Audi", value: "audi" },
                     { label: "BMW", value: "bmw" },
@@ -65,6 +84,12 @@
                         
             clearBrandsSelection(){
                 this.selectedBrands = [];
+                this.selectedBrand = '';
+            },
+
+            selectBrandOption(brand){
+                this.selectedBrand = brand.label; // Atualiza a variável com o valor do item clicado
+                this.brandOptionsIsOpen = false;
             }
         }
     }

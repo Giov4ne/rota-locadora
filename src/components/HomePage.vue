@@ -2,10 +2,14 @@
     <MyHeader></MyHeader>
     <div class="container">
         <section id="register-and-filters">
-            <button id="register-vehicle-btn">Cadastrar Veículo</button>
+            <button id="register-vehicle-btn" @click="openVehicleRegistration">Cadastrar Veículo</button>
             <div id="filters">
-                <BrandsDropdown ref="brandsDropdownRef"></BrandsDropdown>
-                <PurposesDropdown ref="purposesDropdownRef"></PurposesDropdown>
+                <div class="dropdown-boxes">
+                    <BrandsDropdown ref="brandsDropdownRef" :checkbox=true></BrandsDropdown>
+                </div>
+                <div class="dropdown-boxes">
+                    <PurposesDropdown ref="purposesDropdownRef"></PurposesDropdown>
+                </div>
                 <div class="custom-field">
                     <label for="plate">Placa</label>
                     <input type="text" class="inputs" name="plate" placeholder="Digite a placa ou a cor do veículo" v-model="plateInput">
@@ -64,6 +68,7 @@
                 </tbody>
             </table>
         </main>
+        <VehicleRegistration v-if="vehicleRegistrationIsOpen"></VehicleRegistration>
         <MyPagination></MyPagination>
     </div>
 </template>
@@ -72,6 +77,7 @@
 import MyHeader from './MyHeader.vue';
 import BrandsDropdown from './BrandsDropdown.vue';
 import PurposesDropdown from './PurposesDropdown.vue';
+import VehicleRegistration from './VehicleRegistration.vue';
 import MyPagination from './MyPagination.vue';
 
     export default{
@@ -80,6 +86,7 @@ import MyPagination from './MyPagination.vue';
             MyHeader,
             BrandsDropdown,
             PurposesDropdown,
+            VehicleRegistration,
             MyPagination
         },
         data() {
@@ -102,7 +109,8 @@ import MyPagination from './MyPagination.vue';
                     
                     { plate: "ABC-1234", brandModel: "Ford KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, restingPlace: "-26.278385, -48.865418"}
                 ],
-                optionsIsOpen: null
+                optionsIsOpen: null,
+                vehicleRegistrationIsOpen: false
             };
         },
         methods: {
@@ -149,6 +157,10 @@ import MyPagination from './MyPagination.vue';
 
             deleteVehicle(vehicle) {
                 console.log("Deletando:", vehicle);
+            },
+
+            openVehicleRegistration(){
+                this.vehicleRegistrationIsOpen = true;
             }
         }
     }
@@ -180,10 +192,15 @@ import MyPagination from './MyPagination.vue';
     #filters{
         display: flex;
         align-items: center;
+        justify-content: flex-end;
     }
 
-    #filters > *{
+    #filters > *, .dropdown-boxes > *{
         margin: auto auto auto 16px;
+    }
+
+    .dropdown-boxes > *{
+        margin-left: 0;
     }
 
     #filters .custom-field{
@@ -238,11 +255,12 @@ import MyPagination from './MyPagination.vue';
     }
 
     .custom-dropbox{
-        margin: 20px;
         border: 1px solid #d8d8d8;
-        width: 220px;
-        margin-bottom: 20px;
         border-radius: 5px;
+    }
+
+    .dropdown-boxes .custom-dropbox{
+        width: 220px;
     }
 
     .custom-dropbox > label{
@@ -338,7 +356,7 @@ import MyPagination from './MyPagination.vue';
         overflow-y: auto;
     }
 
-    .dropdown-menu .dropdown-menu-content{
+    .dropdown-menu .dropdown-menu-content > div{
         padding: 10px 15px;
     }
 
@@ -371,7 +389,7 @@ import MyPagination from './MyPagination.vue';
         transform: scale(1.3);
     }
 
-    .dropdown-menu .dropdown-menu-content-purpose ul li, .options-dropdown ul li{
+    .dropdown-menu .dropdown-menu-content-purpose ul li, .options-dropdown ul li, .dropdown-menu-content-brand li{
         padding: 10px 15px;
         cursor: pointer;
 

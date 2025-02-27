@@ -1,6 +1,6 @@
 <template>
     <div class="login-signin-container">
-        <form action="">
+        <form action="" id="login-form">
             <span class="fa fa-car"></span>
             <h2 class="form-title">Login</h2>
             <div class="custom-field">

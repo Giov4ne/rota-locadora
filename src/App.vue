@@ -53,7 +53,7 @@ export default {
     background-color: #ececec;
   }
 
-  form{
+  #login-form, #signin-form{
     background-color: #fff;
     width: 480px;
     border-radius: 30px;
@@ -64,7 +64,7 @@ export default {
     align-items: center;
   }
 
-  form .fa-car{
+  #login-form .fa-car, #signin-form .fa-car{
     color: #007DF0;
     font-size: 80px;
   }
@@ -83,8 +83,11 @@ export default {
     flex-direction: column;
     border: 1px solid #d8d8d8;
     width: 100%;
-    margin-bottom: 20px;
     border-radius: 5px;
+  }
+
+  #login-form .custom-field, #signin-form .custom-field{
+    margin-bottom: 20px;
   }
 
   .custom-field label{
