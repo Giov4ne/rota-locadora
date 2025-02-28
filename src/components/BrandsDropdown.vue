@@ -3,9 +3,12 @@
         <label>Marca</label>
         <button class="dropdown-button" @click="brandsToggleDropdown">
             <span v-if="!checkbox" class="dropdown-selected">
-                <span v-if="selectedBrand !== ''" class="dropdown-selected-text">
-                    {{ selectedBrand }}
-                </span>
+                <div v-if="selectedBrand !== ''">
+                    <span class="dropdown-selected-text">
+                        {{ selectedBrand }}
+                    </span>
+                    <span class="close-selected" @click.stop="clearBrandsSelection">x</span>
+                </div>
                 <span v-else class="dropdown-text">
                     Selecione a marca do veículo
                 </span>

@@ -3,7 +3,7 @@
     <div id="vehicle-registration-form">
         <div class="form-header">
             <h2 class="form-header-title">Cadastro de Veículo</h2>
-            <span class="close-form">X</span>
+            <span class="close-form" @click="close">X</span>
         </div>
         <div class="form-body">
             <div class="custom-field" id="plate">
@@ -57,6 +57,11 @@ import PurposesDropdown from './PurposesDropdown.vue';
         components:{
             BrandsDropdown,
             PurposesDropdown
+        },
+        methods:{
+            close(){
+                this.$emit('onClose');
+            }
         }
     }
 </script>

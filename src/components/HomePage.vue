@@ -68,7 +68,7 @@
                 </tbody>
             </table>
         </main>
-        <VehicleRegistration v-if="vehicleRegistrationIsOpen"></VehicleRegistration>
+        <VehicleRegistration v-if="vehicleRegistrationIsOpen" @onClose="closeVehicleRegistration"></VehicleRegistration>
         <MyPagination></MyPagination>
     </div>
 </template>
@@ -161,6 +161,10 @@ import MyPagination from './MyPagination.vue';
 
             openVehicleRegistration(){
                 this.vehicleRegistrationIsOpen = true;
+            },
+
+            closeVehicleRegistration(){
+                this.vehicleRegistrationIsOpen = false;
             }
         }
     }
@@ -423,3 +427,155 @@ import MyPagination from './MyPagination.vue';
         transform: translateY(-10px);
     }
 </style>
+
+<!-- <script setup>
+import { ref } from 'vue'
+
+const anos = Array.from({ length: 10 }, (_, i) => 2020 + i) // Gera anos de 2020 a 2029
+const anoSelecionado = ref(2024)
+
+const selecionarAno = (ano) => {
+  anoSelecionado.value = ano
+}
+</script>
+
+<template>
+  <div class="seletor-ano">
+    <div class="ano-selecionado">{{ anoSelecionado }}</div>
+    <div class="lista-anos">
+      <div v-for="ano in anos" :key="ano" 
+        :class="['ano-item', { ativo: ano === anoSelecionado }]"
+        @click="selecionarAno(ano)">
+        {{ ano }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.seletor-ano {
+  width: 120px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.ano-selecionado {
+  background: blue;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.lista-anos {
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+}
+
+.ano-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.ano-item.ativo {
+  color: blue;
+  font-weight: bold;
+}
+</style> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- SISTEMA DE AVALIAÇÃO COM ESTRELAS
+ 
+COMPONENTE
+
+<template>
+  <div class="star-rating">
+    <span 
+      v-for="star in 5" 
+      :key="star" 
+      @click="rate(star)"
+      @mouseover="hover(star)"
+      @mouseleave="resetHover"
+      class="star"
+      :class="{ filled: star <= (hoveredStar || rating) }"
+    >
+      ★
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    modelValue: Number, // Para v-model (opcional)
+  },
+  data() {
+    return {
+      rating: this.modelValue || 0,
+      hoveredStar: 0
+    };
+  },
+  methods: {
+    rate(star) {
+      this.rating = star;
+      this.$emit('update:modelValue', star);
+    },
+    hover(star) {
+      this.hoveredStar = star;
+    },
+    resetHover() {
+      this.hoveredStar = 0;
+    }
+  }
+};
+</script>
+
+<style scoped>
+.star-rating {
+  font-size: 2rem;
+  cursor: pointer;
+}
+.star {
+  color: gray;
+  transition: color 0.2s;
+}
+.star.filled {
+  color: gold;
+}
+</style>
+
+COMPONENTE PAI
+
+<template>
+  <div>
+    <h2>Avaliação do Veículo:</h2>
+    <StarRating v-model="userRating" />
+    <p>Sua nota: {{ userRating }} estrelas</p>
+  </div>
+</template>
+
+<script>
+import StarRating from "./StarRating.vue";
+
+export default {
+  components: { StarRating },
+  data() {
+    return {
+      userRating: 0
+    };
+  }
+};
+</script>
+
+-->
