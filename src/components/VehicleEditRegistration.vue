@@ -45,7 +45,8 @@
             </div>
             <div id="confort-level">
                 <p id="confort-level-p">Nível de conforto do veículo</p>
-                <StarRating></StarRating>
+                <StarRating v-if="isEditing" v-model="vehicleToEdit.confortLevel" />
+                <StarRating v-else></StarRating>
             </div>
             <label id="zero">
                 <input type="checkbox" :checked="vehicleToEdit.zero" name="zero">
@@ -95,15 +96,6 @@ import StarRating from './StarRating.vue';
 </script>
 
 <style>
-    .form-background{
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 9;
-        background-color: #0000008f;
-        width: 100%;
-        height: 100%;
-    }
 
     #vehicle-edit-registration-form{
         position: fixed;

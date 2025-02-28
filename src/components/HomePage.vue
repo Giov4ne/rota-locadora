@@ -73,6 +73,11 @@
             :vehicle="vehicleToEdit" 
             @onClose="closeVehicleEditRegistration">
         </VehicleEditRegistration>
+        <VehicleDetails
+            v-if="vehicleDetailsIsOpen"
+            :vehicle="vehicleToSeeDetails"
+            @onCloseDetails="closeVehicleDetails"
+        ></VehicleDetails>
         <MyPagination></MyPagination>
     </div>
 </template>
@@ -82,6 +87,7 @@ import MyHeader from './MyHeader.vue';
 import BrandsDropdown from './BrandsDropdown.vue';
 import PurposesDropdown from './PurposesDropdown.vue';
 import VehicleEditRegistration from './VehicleEditRegistration.vue';
+import VehicleDetails from './VehicleDetails.vue';
 import MyPagination from './MyPagination.vue';
 
     export default{
@@ -91,6 +97,7 @@ import MyPagination from './MyPagination.vue';
             BrandsDropdown,
             PurposesDropdown,
             VehicleEditRegistration,
+            VehicleDetails,
             MyPagination
         },
         data() {
@@ -115,7 +122,9 @@ import MyPagination from './MyPagination.vue';
                 ],
                 optionsIsOpen: null,
                 vehicleEditRegistrationIsOpen: false,
-                vehicleToEdit: null
+                vehicleDetailsIsOpen: false,
+                vehicleToEdit: null,
+                vehicleToSeeDetails: null
             };
         },
         methods: {
@@ -157,7 +166,8 @@ import MyPagination from './MyPagination.vue';
             },
 
             vehicleDetails(vehicle) {
-                console.log("Detalhes de:", vehicle);
+                this.vehicleToSeeDetails = vehicle;
+                this.vehicleDetailsIsOpen = true;
                 this.closeOptions();
             },
 
@@ -179,6 +189,11 @@ import MyPagination from './MyPagination.vue';
             closeVehicleEditRegistration(){
                 this.vehicleEditRegistrationIsOpen = false;
                 this.vehicleToEdit = null;
+            },
+
+            closeVehicleDetails(){
+                this.vehicleDetailsIsOpen = false;
+                this.vehicleToSeeDetails = null;
             }
         }
     }
@@ -252,7 +267,7 @@ import MyPagination from './MyPagination.vue';
         padding: 6px 12px;
     }
 
-    table tr td .fa-star{
+    table tr td .fa-star, #details-grid .fa-star{
         color: #007DF0;
         font-size: 14px;
     }
@@ -439,6 +454,16 @@ import MyPagination from './MyPagination.vue';
     .fade-enter-from, .fade-leave-to {
         opacity: 0;
         transform: translateY(-10px);
+    }
+    
+    .form-background{
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9;
+        background-color: #0000008f;
+        width: 100%;
+        height: 100%;
     }
 </style>
 
