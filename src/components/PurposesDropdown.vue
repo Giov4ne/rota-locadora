@@ -2,12 +2,12 @@
     <div class="dropdown custom-dropbox">
         <label>Propósito de uso</label>
         <button @click="purposesToggleDropdown" class="dropdown-button">
-            <span v-if="selectedPurpose === ''" class="dropdown-text">
+            <span v-if="localSelectedPurpose === ''" class="dropdown-text">
                 Selecione o propósito de uso
             </span>
             <span v-else class="dropdown-selected">
                 <span class="dropdown-selected-text">
-                    {{ selectedPurpose }}
+                    {{ localSelectedPurpose }}
                 </span>
                 <span class="close-selected" @click.stop="clearPurposeSelection">x</span>
             </span>
@@ -34,10 +34,16 @@
 <script>
     export default{
         name: 'PurposesDropdown',
+        props: {
+            selectedPurpose: {
+                type: String,
+                default: "" // Valor padrão vazio, caso não seja passado nenhum propósito
+            }
+        },
         data(){
             return{
                 purposesIsOpen: false,
-                selectedPurpose: '',
+                localSelectedPurpose: this.selectedPurpose || '',
                 purposesOfUse: [
                     { label: "Uso pessoal", value: "personal-use" },
                     { label: "Veículo para locação", value: "vehicle-for-rent" },
@@ -51,12 +57,14 @@
             },
 
             selectPurposeOption(purpose){
-                this.selectedPurpose = purpose.label; // Atualiza a variável com o valor do item clicado
+                this.localSelectedPurpose = purpose.label; // Atualiza a variável com o valor do item clicado
                 this.purposesIsOpen = false;
+                this.$emit("update:selectedPurpose", this.localSelectedPurpose); // Emite o valor para o pai
             },
 
             clearPurposeSelection(){
-                this.selectedPurpose = '';
+                this.localSelectedPurpose = '';
+                this.$emit("update:selectedPurpose", ''); // Emite valor vazio para o pai
             }
         }
     }

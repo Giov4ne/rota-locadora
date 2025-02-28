@@ -106,8 +106,8 @@ export default {
     font-size: 12px;
     color: #333;
 
-    &::placeholder{
-        color: #A9A7A9;
+    &::placeholder, &:disabled{
+      color: #A9A7A9;
     }
 
     &:hover{

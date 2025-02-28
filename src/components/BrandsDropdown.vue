@@ -3,9 +3,9 @@
         <label>Marca</label>
         <button class="dropdown-button" @click="brandsToggleDropdown">
             <span v-if="!checkbox" class="dropdown-selected">
-                <div v-if="selectedBrand !== ''">
+                <div v-if="localSelectedBrand !== ''">
                     <span class="dropdown-selected-text">
-                        {{ selectedBrand }}
+                        {{ localSelectedBrand }}
                     </span>
                     <span class="close-selected" @click.stop="clearBrandsSelection">x</span>
                 </div>
@@ -59,13 +59,14 @@
     export default{
         name: 'BrandsDropdown',
         props:{
-            checkbox: Boolean
+            checkbox: Boolean,
+            selectedBrand: String
         },
         data(){
             return{
                 brandOptionsIsOpen: false,
                 selectedBrands: [],
-                selectedBrand: '',
+                localSelectedBrand: this.selectedBrand || '',
                 brandOptions: [
                     { label: "Audi", value: "audi" },
                     { label: "BMW", value: "bmw" },
@@ -87,12 +88,24 @@
                         
             clearBrandsSelection(){
                 this.selectedBrands = [];
-                this.selectedBrand = '';
+                this.localSelectedBrand = '';
             },
 
             selectBrandOption(brand){
-                this.selectedBrand = brand.label; // Atualiza a variável com o valor do item clicado
+                this.localSelectedBrand = brand.label; // Atualiza a variável com o valor do item clicado
                 this.brandOptionsIsOpen = false;
+                this.$emit('update:selectedBrand', this.localSelectedBrand); // Emite a alteração de volta para o componente pai
+            }
+        },
+        watch: {
+            selectedBrand(newVal) {
+                this.localSelectedBrand = newVal;
+            }
+        },
+        mounted() {
+            // Se a marca estiver definida ao editar, ela será atribuída
+            if (this.selectedBrand) {
+                this.localSelectedBrand = this.selectedBrand;
             }
         }
     }

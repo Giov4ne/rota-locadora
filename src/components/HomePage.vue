@@ -2,7 +2,7 @@
     <MyHeader></MyHeader>
     <div class="container">
         <section id="register-and-filters">
-            <button id="register-vehicle-btn" @click="openVehicleRegistration">Cadastrar Veículo</button>
+            <button id="register-vehicle-btn" @click="openVehicleEditRegistration">Cadastrar Veículo</button>
             <div id="filters">
                 <div class="dropdown-boxes">
                     <BrandsDropdown ref="brandsDropdownRef" :checkbox=true></BrandsDropdown>
@@ -43,13 +43,13 @@
                 <tbody>
                     <tr v-for="(vehicle, index) in vehicles" :key="index">
                         <td>{{ vehicle.plate }}</td>
-                        <td>{{ vehicle.brandModel }}</td>
+                        <td>{{ vehicle.brand }} {{ vehicle.model }}</td>
                         <td>{{ vehicle.year }}</td>
                         <td>{{ vehicle.color }}</td>
                         <td>{{ vehicle.purpose }}</td>
                         <td>{{ vehicle.zero ? 'Sim' : 'Não' }}</td>
                         <td>{{ vehicle.confortLevel }} <span class="fa fa-star"></span></td>
-                        <td>{{ vehicle.restingPlace }}</td>
+                        <td>{{ vehicle.latitude }}, {{ vehicle.longitude }}</td>
                         <td>
                             <div class="options-dropdown-container" ref="dropdowns">
                                 <span class="ellipsis" @click="optionsToggleDropdown(index)">...</span>
@@ -68,7 +68,11 @@
                 </tbody>
             </table>
         </main>
-        <VehicleRegistration v-if="vehicleRegistrationIsOpen" @onClose="closeVehicleRegistration"></VehicleRegistration>
+        <VehicleEditRegistration 
+            v-if="vehicleEditRegistrationIsOpen" 
+            :vehicle="vehicleToEdit" 
+            @onClose="closeVehicleEditRegistration">
+        </VehicleEditRegistration>
         <MyPagination></MyPagination>
     </div>
 </template>
@@ -77,7 +81,7 @@
 import MyHeader from './MyHeader.vue';
 import BrandsDropdown from './BrandsDropdown.vue';
 import PurposesDropdown from './PurposesDropdown.vue';
-import VehicleRegistration from './VehicleRegistration.vue';
+import VehicleEditRegistration from './VehicleEditRegistration.vue';
 import MyPagination from './MyPagination.vue';
 
     export default{
@@ -86,31 +90,32 @@ import MyPagination from './MyPagination.vue';
             MyHeader,
             BrandsDropdown,
             PurposesDropdown,
-            VehicleRegistration,
+            VehicleEditRegistration,
             MyPagination
         },
         data() {
             return {
                 plateInput: '',
                 vehicles: [
-                    { plate: "ABC-1234", brandModel: "BMW Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "BMW", model: " Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brandModel: "Chevrolet Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "Chevrolet", model: "Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brandModel: "Peugeot 208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "Peugeot", model: "208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brandModel: "Audi A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "Audi", model: "A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brandModel: "Jeep Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "Jeep", model: "Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brandModel: "Ford Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "Ford", model: "Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brandModel: "Fiat Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, restingPlace: "-26.278385, -48.865418"},
+                    { plate: "ABC-1234", brand: "Fiat", model: "Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
                     
-                    { plate: "ABC-1234", brandModel: "Ford KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, restingPlace: "-26.278385, -48.865418"}
+                    { plate: "ABC-1234", brand: "Ford", model: "KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, latitude: "-26.278385", longitude: "-48.865418" }
                 ],
                 optionsIsOpen: null,
-                vehicleRegistrationIsOpen: false
+                vehicleEditRegistrationIsOpen: false,
+                vehicleToEdit: null
             };
         },
         methods: {
@@ -147,24 +152,33 @@ import MyPagination from './MyPagination.vue';
                 }
             },
 
+            closeOptions(){
+                this.optionsIsOpen = null;
+            },
+
             vehicleDetails(vehicle) {
                 console.log("Detalhes de:", vehicle);
+                this.closeOptions();
             },
 
             editVehicle(vehicle) {
-                console.log("Editando:", vehicle);
+                this.vehicleToEdit = vehicle;
+                this.vehicleEditRegistrationIsOpen = true;
+                this.closeOptions();
             },
 
             deleteVehicle(vehicle) {
                 console.log("Deletando:", vehicle);
+                this.closeOptions();
             },
 
-            openVehicleRegistration(){
-                this.vehicleRegistrationIsOpen = true;
+            openVehicleEditRegistration(){
+                this.vehicleEditRegistrationIsOpen = true;
             },
 
-            closeVehicleRegistration(){
-                this.vehicleRegistrationIsOpen = false;
+            closeVehicleEditRegistration(){
+                this.vehicleEditRegistrationIsOpen = false;
+                this.vehicleToEdit = null;
             }
         }
     }
@@ -428,154 +442,26 @@ import MyPagination from './MyPagination.vue';
     }
 </style>
 
-<!-- <script setup>
-import { ref } from 'vue'
-
-const anos = Array.from({ length: 10 }, (_, i) => 2020 + i) // Gera anos de 2020 a 2029
-const anoSelecionado = ref(2024)
-
-const selecionarAno = (ano) => {
-  anoSelecionado.value = ano
-}
-</script>
-
-<template>
-  <div class="seletor-ano">
-    <div class="ano-selecionado">{{ anoSelecionado }}</div>
-    <div class="lista-anos">
-      <div v-for="ano in anos" :key="ano" 
-        :class="['ano-item', { ativo: ano === anoSelecionado }]"
-        @click="selecionarAno(ano)">
-        {{ ano }}
-      </div>
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.seletor-ano {
-  width: 120px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.ano-selecionado {
-  background: blue;
-  color: white;
-  padding: 10px;
-  font-weight: bold;
-}
-
-.lista-anos {
-  max-height: 200px;
-  overflow-y: auto;
-  background: white;
-}
-
-.ano-item {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.ano-item.ativo {
-  color: blue;
-  font-weight: bold;
-}
-</style> -->
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- SISTEMA DE AVALIAÇÃO COM ESTRELAS
- 
-COMPONENTE
-
-<template>
-  <div class="star-rating">
-    <span 
-      v-for="star in 5" 
-      :key="star" 
-      @click="rate(star)"
-      @mouseover="hover(star)"
-      @mouseleave="resetHover"
-      class="star"
-      :class="{ filled: star <= (hoveredStar || rating) }"
-    >
-      ★
-    </span>
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    modelValue: Number, // Para v-model (opcional)
-  },
-  data() {
-    return {
-      rating: this.modelValue || 0,
-      hoveredStar: 0
-    };
-  },
-  methods: {
-    rate(star) {
-      this.rating = star;
-      this.$emit('update:modelValue', star);
-    },
-    hover(star) {
-      this.hoveredStar = star;
-    },
-    resetHover() {
-      this.hoveredStar = 0;
-    }
-  }
-};
-</script>
-
-<style scoped>
-.star-rating {
-  font-size: 2rem;
-  cursor: pointer;
-}
-.star {
-  color: gray;
-  transition: color 0.2s;
-}
-.star.filled {
-  color: gold;
-}
-</style>
-
-COMPONENTE PAI
-
+<!-- 
+USAR STAR RATING NO COMPONENTE PAI
 <template>
   <div>
-    <h2>Avaliação do Veículo:</h2>
-    <StarRating v-model="userRating" />
-    <p>Sua nota: {{ userRating }} estrelas</p>
+    <h2>Avalie o veículo:</h2>
+    <StarRating v-model="vehicleRating" />
+    <p>Sua avaliação: {{ vehicleRating }}</p>
   </div>
 </template>
 
 <script>
-import StarRating from "./StarRating.vue";
+import StarRating from './StarRating.vue';
 
 export default {
   components: { StarRating },
   data() {
     return {
-      userRating: 0
+      vehicleRating: 3 // Valor inicial
     };
   }
 };
 </script>
-
 -->

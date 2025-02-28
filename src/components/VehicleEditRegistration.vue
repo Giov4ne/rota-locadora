@@ -1,46 +1,54 @@
 <template>
     <div class="form-background"></div>
-    <div id="vehicle-registration-form">
+    <div id="vehicle-edit-registration-form">
         <div class="form-header">
-            <h2 class="form-header-title">Cadastro de Veículo</h2>
+            <h2 class="form-header-title">{{ isEditing ? "Edição de Veículo" : "Cadastro de Veículo" }}</h2>
             <span class="close-form" @click="close">X</span>
         </div>
         <div class="form-body">
             <div class="custom-field" id="plate">
                 <label for="plate">Placa</label>
-                <input type="text" class="inputs" name="plate" placeholder="Digite a placa do veículo">
+                <input v-if="isEditing" :value="vehicleToEdit.plate" disabled type="text" class="inputs" name="plate">
+                <input v-else type="text" class="inputs" name="plate" placeholder="Digite a placa do veículo">
             </div>
             <div id="brand">
-                <BrandsDropdown :checkbox=false></BrandsDropdown>
+                <BrandsDropdown :checkbox=false :selectedBrand="vehicleToEdit.brand"></BrandsDropdown>
             </div> 
             <div class="custom-field" id="model">
                 <label for="model">Modelo</label>
-                <input type="text" class="inputs" name="model" placeholder="Digite o modelo do veículo">
+                <input v-if="isEditing" :value="vehicleToEdit.model" type="text" class="inputs" name="model" placeholder="Digite o modelo do veículo">
+                <input v-else type="text" class="inputs" name="model" placeholder="Digite o modelo do veículo">
             </div>
             <div class="custom-field" id="year">
                 <label for="year">Ano</label>
-                <input type="text" class="inputs" name="year" placeholder="Selecione o ano do veículo">
+                <input v-if="isEditing" :value="vehicleToEdit.year" type="text" class="inputs" name="year" placeholder="Selecione o ano do veículo">
+                <input v-else type="text" class="inputs" name="year" placeholder="Selecione o ano do veículo">
             </div>
             <div class="custom-field" id="color">
                 <label for="color">Cor</label>
-                <input type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
+                <input v-if="isEditing" :value="vehicleToEdit.color" type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
+                <input v-else type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
             </div>
             <div id="purpose">
-                <PurposesDropdown></PurposesDropdown>
+                <PurposesDropdown :selectedPurpose="vehicleToEdit.purpose"></PurposesDropdown>
             </div>
             <p id="resting-place">Local de repouso do veículo</p>
             <div class="custom-field" id="latitude">
                 <label for="latitude">Latitude</label>
-                <input type="text" class="inputs" name="latitude" placeholder="Digite a latitude">
+                <input v-if="isEditing" :value="vehicleToEdit.latitude" type="text" class="inputs" name="latitude" placeholder="Digite a latitude">
+                <input v-else type="text" class="inputs" name="latitude" placeholder="Digite a latitude">
             </div>
             <div class="custom-field" id="longitude">
                 <label for="longitude">Longitude</label>
-                <input type="text" class="inputs" name="longitude" placeholder="Digite a longitude">
+                <input v-if="isEditing" :value="vehicleToEdit.longitude" type="text" class="inputs" name="longitude" placeholder="Digite a longitude">
+                <input v-else type="text" class="inputs" name="longitude" placeholder="Digite a longitude">
             </div>
-            <p id="confort-level">Nível de conforto do veículo</p>
-            <!-- ... -->
+            <div id="confort-level">
+                <p id="confort-level-p">Nível de conforto do veículo</p>
+                <StarRating></StarRating>
+            </div>
             <label id="zero">
-                <input type="checkbox" name="zero">
+                <input type="checkbox" :checked="vehicleToEdit.zero" name="zero">
                 Veículo zero-quilômetro
             </label>
             <button id="register-vehicle-form-btn">Salvar</button>
@@ -51,12 +59,32 @@
 <script>
 import BrandsDropdown from './BrandsDropdown.vue';
 import PurposesDropdown from './PurposesDropdown.vue';
+import StarRating from './StarRating.vue';
 
     export default{
         name: 'VehicleRegistration',
         components:{
             BrandsDropdown,
-            PurposesDropdown
+            PurposesDropdown,
+            StarRating
+        },
+        props:{
+            vehicle: {
+                type: Object,
+                default: () => null // Se não for passado, será tratado como null
+            }
+        },
+        computed: {
+            isEditing() {
+                return this.vehicle !== null; // Se for null, está criando
+            }
+        },
+        data() {
+            return {
+                vehicleToEdit: this.vehicle 
+                ? { ...this.vehicle } // Copia para não alterar diretamente a prop
+                : { plate: "", brand: "", model: "", year: 0, color: "", purpose: "", zero: false, confortLevel: 0, restingPlace: "" } // Novo veículo
+            };
         },
         methods:{
             close(){
@@ -77,7 +105,7 @@ import PurposesDropdown from './PurposesDropdown.vue';
         height: 100%;
     }
 
-    #vehicle-registration-form{
+    #vehicle-edit-registration-form{
         position: fixed;
         top: 50%;
         left: 50%;
@@ -160,6 +188,7 @@ import PurposesDropdown from './PurposesDropdown.vue';
 
     #confort-level{
         grid-area: 6 / 1 / 7 / 3;
+        display: flex;
     }
 
     #zero{
@@ -185,11 +214,15 @@ import PurposesDropdown from './PurposesDropdown.vue';
         }
     }
 
-    #resting-place, #confort-level, #zero{
+    #resting-place, #confort-level-p, #zero{
         color: #333;
         font-size: 14px;
         display: flex;
         align-items: center;
+    }
+
+    #confort-level-p{
+        margin-right: 16px;
     }
 
     #zero input{
