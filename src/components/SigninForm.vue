@@ -18,8 +18,8 @@
             <div class="custom-field">
                 <label for="password">Senha</label>
                 <div class="password-input">
-                    <input type="password" class="inputs password" name="password" placeholder="Digite a senha">
-                    <span class="fa fa-eye"></span>
+                    <input :type="inputType" class="inputs password" name="password" placeholder="Digite a senha">
+                    <span :class="showHideBtn" @click="showHidePassword"></span>
                 </div>
                 <!-- <span class="fa fa-eye-slash"></span> -->
             </div>
@@ -34,7 +34,9 @@
         name: 'SigninForm',
         data(){
             return{
-                dateValue: ''
+                dateValue: '',
+                inputType: 'password',
+                showHideBtn: 'fa fa-eye'
             }
         },
         computed:{
@@ -42,6 +44,17 @@
                 return {
                     color: this.dateValue ? "#333" : "#A9A7A9"
                 };
+            }
+        },
+        methods:{
+            showHidePassword(){
+                if(this.inputType === 'password'){
+                    this.inputType = 'text';
+                    this.showHideBtn = 'fa fa-eye-slash';
+                } else{
+                    this.inputType = 'password';
+                    this.showHideBtn = 'fa fa-eye';
+                }
             }
         }
     }

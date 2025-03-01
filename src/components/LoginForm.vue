@@ -10,8 +10,8 @@
             <div class="custom-field">
                 <label for="password">Senha</label>
                 <div class="password-input">
-                    <input type="password" class="inputs password" name="password" placeholder="Digite a senha">
-                    <span class="fa fa-eye"></span>
+                    <input :type="inputType" class="inputs password" name="password" placeholder="Digite a senha">
+                    <span :class="showHideBtn" @click="showHidePassword"></span>
                 </div>
                 <!-- <span class="fa fa-eye-slash"></span> -->
             </div>
@@ -23,7 +23,24 @@
 
 <script>
     export default{
-        name: 'LoginForm'
+        name: 'LoginForm',
+        data(){
+            return{
+                inputType: 'password',
+                showHideBtn: 'fa fa-eye'
+            }
+        },
+        methods:{
+            showHidePassword(){
+                if(this.inputType === 'password'){
+                    this.inputType = 'text';
+                    this.showHideBtn = 'fa fa-eye-slash';
+                } else{
+                    this.inputType = 'password';
+                    this.showHideBtn = 'fa fa-eye';
+                }
+            }
+        }
     }
 </script>
 

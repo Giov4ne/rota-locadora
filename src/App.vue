@@ -1,6 +1,6 @@
 <template>
-  <!-- <LoginForm></LoginForm> -->
-  <SigninForm></SigninForm>
+  <LoginForm></LoginForm>
+  <!-- <SigninForm></SigninForm> -->
   <!-- <HomePage></HomePage> -->
   <!-- <ActivityHistory></ActivityHistory> -->
 </template>
@@ -10,15 +10,15 @@
 
 /* import HomePage from './components/HomePage.vue'; */
 
-import SigninForm from './components/SigninForm.vue';
+/* import SigninForm from './components/SigninForm.vue'; */
 
-/* import LoginForm from './components/LoginForm.vue'; */
+import LoginForm from './components/LoginForm.vue';
 
 export default {
   name: 'App',
   components: {
-    /* LoginForm */
-    SigninForm
+    LoginForm
+    /* SigninForm */
     /* HomePage */
     /* ActivityHistory */
   }
@@ -129,7 +129,7 @@ export default {
     width: 90%;
   }
 
-  .fa-eye{
+  .fa-eye, .fa-eye-slash{
     font-size: 19px;
     width: 10%;
     text-align: center;
