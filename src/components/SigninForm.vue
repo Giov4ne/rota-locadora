@@ -9,7 +9,7 @@
             </div>
             <div class="custom-field">
                 <label for="birthday">Data de aniversário</label>
-                <input type="text" class="inputs" name="birthday" placeholder="Selecione a data de aniversário">
+                <input type="date" class="inputs" name="birthday" v-model="dateValue" :style="dateColorStyle">
             </div>
             <div class="custom-field">
                 <label for="email">E-mail</label>
@@ -31,7 +31,19 @@
 
 <script>
     export default{
-        name: 'SigninForm'
+        name: 'SigninForm',
+        data(){
+            return{
+                dateValue: ''
+            }
+        },
+        computed:{
+            dateColorStyle() {
+                return {
+                    color: this.dateValue ? "#333" : "#A9A7A9"
+                };
+            }
+        }
     }
 </script>
 

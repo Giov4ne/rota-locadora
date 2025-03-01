@@ -1,16 +1,16 @@
 <template>
   <!-- <LoginForm></LoginForm> -->
-  <!-- <SigninForm></SigninForm> -->
-   <HomePage></HomePage>
+  <SigninForm></SigninForm>
+  <!-- <HomePage></HomePage> -->
   <!-- <ActivityHistory></ActivityHistory> -->
 </template>
 
 <script>
 /* import ActivityHistory from './components/ActivityHistory.vue'; */
 
-import HomePage from './components/HomePage.vue';
+/* import HomePage from './components/HomePage.vue'; */
 
-/* import SigninForm from './components/SigninForm.vue'; */
+import SigninForm from './components/SigninForm.vue';
 
 /* import LoginForm from './components/LoginForm.vue'; */
 
@@ -18,8 +18,8 @@ export default {
   name: 'App',
   components: {
     /* LoginForm */
-    /* SigninForm */
-    HomePage
+    SigninForm
+    /* HomePage */
     /* ActivityHistory */
   }
 }
@@ -113,6 +113,10 @@ export default {
     &:hover{
       background-color: #f0f0f086;
     }
+  }
+
+  input[type="date"]{
+    color: #A9A7A9;
   }
 
   .password-input{
