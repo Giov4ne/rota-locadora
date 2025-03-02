@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="login-signin-container">
         <form action="" id="signin-form">
             <span class="fa fa-car"></span>
@@ -21,7 +21,7 @@
                     <input :type="inputType" class="inputs password" name="password" placeholder="Digite a senha">
                     <span :class="showHideBtn" @click="showHidePassword"></span>
                 </div>
-                <!-- <span class="fa fa-eye-slash"></span> -->
+                
             </div>
             <input type="submit" class="submit-btn" value="CADASTRAR">
             <a href="" class="signin-login-link">Fazer login</a>      
@@ -58,6 +58,88 @@
             }
         }
     }
+</script>
+
+<style>
+
+</style> -->
+
+<template>
+    <div class="login-signin-container">
+        <form @submit.prevent="validateForm" id="signin-form">
+            <span class="fa fa-car"></span>
+            <h2 class="form-title">Novo Cadastro</h2>
+            <div class="custom-field">
+                <label for="username">Nome de Usuário</label>
+                <input type="text" class="inputs" v-model="username" placeholder="Digite o nome do usuário" required pattern=".{3,}" title="O nome de usuário deve ter pelo menos 3 caracteres">
+            </div>
+            <div class="custom-field">
+                <label for="birthday">Data de nascimento</label> 
+                <input type="date" class="inputs" v-model="dateValue" :style="dateColorStyle" required :max="maxDate" :min="minDate">
+            </div>
+            <div class="custom-field">
+                <label for="email">E-mail</label>
+                <input type="email" class="inputs" v-model="email" placeholder="Digite o e-mail" required>
+            </div>
+            <div class="custom-field">
+                <label for="password">Senha</label>
+                <div class="password-input">
+                    <input :type="inputType" class="inputs password" v-model="password" placeholder="Digite a senha" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$" title="A senha deve ter pelo menos 8 caracteres, incluindo uma letra e um número">
+                    <span :class="showHideBtn" @click="showHidePassword"></span>
+                </div>
+            </div>
+            <input type="submit" class="submit-btn" value="CADASTRAR">
+            <a href="" class="signin-login-link">Fazer login</a>      
+        </form>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'SigninForm',
+        data() {
+            return {
+                username: '',
+                dateValue: '',
+                email: '',
+                password: '',
+                inputType: 'password',
+                showHideBtn: 'fa fa-eye'
+            };
+        },
+        computed: {
+            maxDate() {
+                return new Date().toISOString().split("T")[0];
+            },
+            minDate() {
+                return "1900-01-01";
+            },
+            dateColorStyle() {
+                return {
+                    color: this.dateValue ? "#333" : "#A9A7A9"
+                };
+            }
+        },
+        methods: {
+            showHidePassword() {
+                if(this.inputType === 'password'){
+                    this.inputType = 'text';
+                    this.showHideBtn = 'fa fa-eye-slash';
+                } else{
+                    this.inputType = 'password';
+                    this.showHideBtn = 'fa fa-eye';
+                }
+            },
+            validateForm(event) {
+                const form = event.target;
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                alert('Cadastro realizado com sucesso!');
+            }
+        }
+    };
 </script>
 
 <style>

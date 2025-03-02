@@ -5,12 +5,12 @@
             <h2 class="form-title">Login</h2>
             <div class="custom-field">
                 <label for="email">E-mail</label>
-                <input type="text" class="inputs" name="email" placeholder="Digite o e-mail">
+                <input type="text" class="inputs" name="email" placeholder="Digite o e-mail" required>
             </div>
             <div class="custom-field">
                 <label for="password">Senha</label>
                 <div class="password-input">
-                    <input :type="inputType" class="inputs password" name="password" placeholder="Digite a senha">
+                    <input :type="inputType" class="inputs password" name="password" placeholder="Digite a senha" required>
                     <span :class="showHideBtn" @click="showHidePassword"></span>
                 </div>
                 <!-- <span class="fa fa-eye-slash"></span> -->
