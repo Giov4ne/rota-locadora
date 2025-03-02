@@ -9,7 +9,7 @@
             </div>
             <div class="custom-field">
                 <label for="birthday">Data de aniversário</label>
-                <input type="date" class="inputs" name="birthday" v-model="dateValue" :style="dateColorStyle">
+                <input type="date" class="inputs" name="birthday" v-model="birthDate" :style="dateColorStyle">
             </div>
             <div class="custom-field">
                 <label for="email">E-mail</label>
@@ -34,7 +34,7 @@
         name: 'SigninForm',
         data(){
             return{
-                dateValue: '',
+                birthDate: '',
                 inputType: 'password',
                 showHideBtn: 'fa fa-eye'
             }
@@ -42,7 +42,7 @@
         computed:{
             dateColorStyle() {
                 return {
-                    color: this.dateValue ? "#333" : "#A9A7A9"
+                    color: this.birthDate ? "#333" : "#A9A7A9"
                 };
             }
         },
@@ -66,7 +66,7 @@
 
 <template>
     <div class="login-signin-container">
-        <form @submit.prevent="validateForm" id="signin-form">
+        <form @submit.prevent="validateForm" @submit="registerUser" id="signin-form">
             <span class="fa fa-car"></span>
             <h2 class="form-title">Novo Cadastro</h2>
             <div class="custom-field">
@@ -75,7 +75,7 @@
             </div>
             <div class="custom-field">
                 <label for="birthday">Data de nascimento</label> 
-                <input type="date" class="inputs" v-model="dateValue" :style="dateColorStyle" required :max="maxDate" :min="minDate">
+                <input type="date" class="inputs" v-model="birthDate" :style="dateColorStyle" required :max="maxDate" :min="minDate">
             </div>
             <div class="custom-field">
                 <label for="email">E-mail</label>
@@ -84,7 +84,7 @@
             <div class="custom-field">
                 <label for="password">Senha</label>
                 <div class="password-input">
-                    <input :type="inputType" class="inputs password" v-model="password" placeholder="Digite a senha" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$" title="A senha deve ter pelo menos 8 caracteres, incluindo uma letra e um número">
+                    <input :type="inputType" class="inputs password" v-model="password" placeholder="Digite a senha" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$" title="A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um caractere especial e um número">
                     <span :class="showHideBtn" @click="showHidePassword"></span>
                 </div>
             </div>
@@ -100,11 +100,12 @@
         data() {
             return {
                 username: '',
-                dateValue: '',
+                birthDate: '',
                 email: '',
                 password: '',
                 inputType: 'password',
-                showHideBtn: 'fa fa-eye'
+                showHideBtn: 'fa fa-eye',
+                registeredUsers: []
             };
         },
         computed: {
@@ -116,7 +117,7 @@
             },
             dateColorStyle() {
                 return {
-                    color: this.dateValue ? "#333" : "#A9A7A9"
+                    color: this.birthDate ? "#333" : "#A9A7A9"
                 };
             }
         },
@@ -136,8 +137,28 @@
                     form.reportValidity();
                     return;
                 }
-                alert('Cadastro realizado com sucesso!');
+            },
+            registerUser(){
+                if(!this.userExists()){
+                    this.registeredUsers.push({
+                        username: this.username,
+                        birthDate: this.birthDate,
+                        email: this.email,
+                        password: this.password
+                    });
+                    localStorage.setItem('registeredUsers', JSON.stringify(this.registeredUsers));
+                    alert('Usuário cadastrado com sucesso!');
+                } else{
+                    alert('Já existe um usuário cadastrado com este e-mail!');
+                }
+            },
+            userExists(){
+                return this.registeredUsers.some(user => this.email === user.email);
             }
+        },
+        mounted(){
+            this.registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) !== null ? JSON.parse(localStorage.getItem('registeredUsers')) : [];
+            console.log(this.registeredUsers);
         }
     };
 </script>
