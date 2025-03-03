@@ -1,25 +1,25 @@
 <template>
-  <LoginForm></LoginForm>
+  <!-- <LoginForm></LoginForm> -->
   <!-- <SigninForm></SigninForm> -->
-  <!-- <HomePage></HomePage> -->
+  <HomePage></HomePage>
   <!-- <ActivityHistory></ActivityHistory> -->
 </template>
 
 <script>
 /* import ActivityHistory from './components/ActivityHistory.vue'; */
 
-/* import HomePage from './components/HomePage.vue'; */
+import HomePage from './components/HomePage.vue';
 
 /* import SigninForm from './components/SigninForm.vue'; */
 
-import LoginForm from './components/LoginForm.vue';
+/* import LoginForm from './components/LoginForm.vue'; */
 
 export default {
   name: 'App',
   components: {
-    LoginForm
+    /* LoginForm */
     /* SigninForm */
-    /* HomePage */
+    HomePage
     /* ActivityHistory */
   }
 }

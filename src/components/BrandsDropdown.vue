@@ -60,13 +60,13 @@
         name: 'BrandsDropdown',
         props:{
             checkbox: Boolean,
-            selectedBrand: String
+            modelValue: String
         },
         data(){
             return{
                 brandOptionsIsOpen: false,
                 selectedBrands: [],
-                localSelectedBrand: this.selectedBrand || '',
+                localSelectedBrand: this.modelValue || '',
                 brandOptions: [
                     { label: "Audi", value: "audi" },
                     { label: "BMW", value: "bmw" },
@@ -89,12 +89,13 @@
             clearBrandsSelection(){
                 this.selectedBrands = [];
                 this.localSelectedBrand = '';
+                this.$emit('update:modelValue', '');
             },
 
             selectBrandOption(brand){
                 this.localSelectedBrand = brand.label; // Atualiza a variável com o valor do item clicado
                 this.brandOptionsIsOpen = false;
-                this.$emit('update:selectedBrand', this.localSelectedBrand); // Emite a alteração de volta para o componente pai
+                this.$emit('update:modelValue', brand.label); // Emite a alteração de volta para o componente pai
             }
         },
         watch: {
@@ -104,8 +105,8 @@
         },
         mounted() {
             // Se a marca estiver definida ao editar, ela será atribuída
-            if (this.selectedBrand) {
-                this.localSelectedBrand = this.selectedBrand;
+            if (this.modelValue) {
+                this.localSelectedBrand = this.modelValue;
             }
         }
     }

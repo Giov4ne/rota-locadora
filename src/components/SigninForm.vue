@@ -119,6 +119,9 @@
                 return {
                     color: this.birthDate ? "#333" : "#A9A7A9"
                 };
+            },
+            userExists(){
+                return this.registeredUsers.some(user => this.email === user.email);
             }
         },
         methods: {
@@ -139,7 +142,7 @@
                 }
             },
             registerUser(){
-                if(!this.userExists()){
+                if(!this.userExists){
                     this.registeredUsers.push({
                         username: this.username,
                         birthDate: this.birthDate,
@@ -151,9 +154,6 @@
                 } else{
                     alert('Já existe um usuário cadastrado com este e-mail!');
                 }
-            },
-            userExists(){
-                return this.registeredUsers.some(user => this.email === user.email);
             }
         },
         mounted(){

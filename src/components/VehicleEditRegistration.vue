@@ -1,60 +1,104 @@
 <template>
     <div class="form-background"></div>
-    <div id="vehicle-edit-registration-form">
+    
+    <form v-if="isEditing" @submit.prevent="validateForm" id="vehicle-edit-registration-form">
         <div class="form-header">
-            <h2 class="form-header-title">{{ isEditing ? "Edição de Veículo" : "Cadastro de Veículo" }}</h2>
+            <h2 class="form-header-title">Edição de Veículo</h2>
             <span class="close-form" @click="close">X</span>
         </div>
         <div class="form-body">
             <div class="custom-field" id="plate">
                 <label for="plate">Placa</label>
-                <input v-if="isEditing" :value="vehicleToEdit.plate" disabled type="text" class="inputs" name="plate">
-                <input v-else type="text" class="inputs" name="plate" placeholder="Digite a placa do veículo">
+                <input v-model="vehicleToEdit.plate" disabled type="text" class="inputs" name="plate">
             </div>
             <div id="brand">
-                <BrandsDropdown :checkbox=false :selectedBrand="vehicleToEdit.brand"></BrandsDropdown>
+                <BrandsDropdown :checkbox=false v-model="vehicleToEdit.brand"></BrandsDropdown>
             </div> 
             <div class="custom-field" id="model">
                 <label for="model">Modelo</label>
-                <input v-if="isEditing" :value="vehicleToEdit.model" type="text" class="inputs" name="model" placeholder="Digite o modelo do veículo">
-                <input v-else type="text" class="inputs" name="model" placeholder="Digite o modelo do veículo">
+                <input v-model="vehicleToEdit.model" type="text" class="inputs" name="model" placeholder="Digite o modelo do veículo">
             </div>
             <div class="custom-field" id="year">
                 <label for="year">Ano</label>
-                <input v-if="isEditing" :value="vehicleToEdit.year" type="text" class="inputs" name="year" placeholder="Selecione o ano do veículo">
-                <input v-else type="text" class="inputs" name="year" placeholder="Selecione o ano do veículo">
+                <input v-model="vehicleToEdit.year" @input="validateYear" minlength="4" maxlength="4" type="text" class="inputs" name="year" placeholder="Selecione o ano do veículo">
             </div>
             <div class="custom-field" id="color">
                 <label for="color">Cor</label>
-                <input v-if="isEditing" :value="vehicleToEdit.color" type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
-                <input v-else type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
+                <input v-model="vehicleToEdit.color" type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
             </div>
             <div id="purpose">
-                <PurposesDropdown :selectedPurpose="vehicleToEdit.purpose"></PurposesDropdown>
+                <PurposesDropdown v-model="vehicleToEdit.purpose"></PurposesDropdown>
             </div>
             <p id="resting-place">Local de repouso do veículo</p>
             <div class="custom-field" id="latitude">
                 <label for="latitude">Latitude</label>
-                <input v-if="isEditing" :value="vehicleToEdit.latitude" type="text" class="inputs" name="latitude" placeholder="Digite a latitude">
-                <input v-else type="text" class="inputs" name="latitude" placeholder="Digite a latitude">
+                <input v-model="vehicleToEdit.latitude" @input="validateLatitude" type="text" class="inputs" name="latitude" placeholder="Digite a latitude">
             </div>
             <div class="custom-field" id="longitude">
                 <label for="longitude">Longitude</label>
-                <input v-if="isEditing" :value="vehicleToEdit.longitude" type="text" class="inputs" name="longitude" placeholder="Digite a longitude">
-                <input v-else type="text" class="inputs" name="longitude" placeholder="Digite a longitude">
+                <input v-model="vehicleToEdit.longitude" @input="validateLongitude" type="text" class="inputs" name="longitude" placeholder="Digite a longitude">
             </div>
             <div id="confort-level">
                 <p id="confort-level-p">Nível de conforto do veículo</p>
-                <StarRating v-if="isEditing" v-model="vehicleToEdit.confortLevel" />
-                <StarRating v-else></StarRating>
+                <StarRating v-model="vehicleToEdit.confortLevel" />
             </div>
             <label id="zero">
-                <input type="checkbox" :checked="vehicleToEdit.zero" name="zero">
+                <input type="checkbox" v-model="vehicleToEdit.zero" name="zero">
                 Veículo zero-quilômetro
             </label>
-            <button id="register-vehicle-form-btn">Salvar</button>
+            <input type="submit" id="register-vehicle-form-btn" value="Salvar">
         </div>
-    </div>
+    </form>
+
+    <form v-else @submit.prevent="validateForm" id="vehicle-edit-registration-form">
+        <div class="form-header">
+            <h2 class="form-header-title">Cadastro de Veículo</h2>
+            <span class="close-form" @click="close">X</span>
+        </div>
+        <div class="form-body">
+            <div class="custom-field" id="plate">
+                <label for="plate">Placa</label>
+                <input v-model="newVehicle.plate" @input="formatPlate" minlength="8" maxlength="8" type="text" class="inputs" name="plate" required placeholder="Digite a placa do veículo">
+            </div>
+            <div id="brand">
+                <BrandsDropdown :checkbox=false v-model="newVehicle.brand"></BrandsDropdown>
+            </div> 
+            <div class="custom-field" id="model">
+                <label for="model">Modelo</label>
+                <input v-model="newVehicle.model" type="text" class="inputs" name="model" required placeholder="Digite o modelo do veículo">
+            </div>
+            <div class="custom-field" id="year">
+                <label for="year">Ano</label>
+                <input v-model="newVehicle.year" @input="validateYear" minlength="4" maxlength="4" type="text" class="inputs" name="year" required placeholder="Selecione o ano do veículo">
+            </div>
+            <div class="custom-field" id="color">
+                <label for="color">Cor</label>
+                <input v-model="newVehicle.color" type="text" class="inputs" name="color" required placeholder="Digite a cor do veículo">
+            </div>
+            <div id="purpose">
+                <PurposesDropdown v-model="newVehicle.purpose"></PurposesDropdown>
+            </div>
+            <p id="resting-place">Local de repouso do veículo</p>
+            <div class="custom-field" id="latitude">
+                <label for="latitude">Latitude</label>
+                <input v-model="newVehicle.latitude" @input="validateLatitude" type="text" class="inputs" name="latitude" required placeholder="Digite a latitude">
+            </div>
+            <div class="custom-field" id="longitude">
+                <label for="longitude">Longitude</label>
+                <input v-model="newVehicle.longitude" @input="validateLongitude" type="text" class="inputs" name="longitude" required placeholder="Digite a longitude">
+            </div>
+            <div id="confort-level">
+                <p id="confort-level-p">Nível de conforto do veículo</p>
+                <StarRating v-model="newVehicle.confortLevel"></StarRating>
+            </div>
+            <label id="zero">
+                <input type="checkbox" v-model="newVehicle.zero" name="zero">
+                Veículo zero-quilômetro
+            </label>
+            <input type="submit" id="register-vehicle-form-btn" value="Salvar">
+        </div>
+    </form>
+    <span v-if="errorMsg !== ''" id="error-message">{{ errorMsg }}</span>
 </template>
 
 <script>
@@ -73,23 +117,151 @@ import StarRating from './StarRating.vue';
             vehicle: {
                 type: Object,
                 default: () => null // Se não for passado, será tratado como null
-            }
+            },
+            allVehicles: Array
         },
         computed: {
-            isEditing() {
+            isEditing(){
                 return this.vehicle !== null; // Se for null, está criando
+            },
+            isPlateValid(){
+                return /^[A-Z]{3}-\d{4}$/.test(this.isEditing ? this.vehicleToEdit.plate : this.newVehicle.plate);
+            },
+            isBrandSelected(){
+                return this.isEditing ? this.vehicleToEdit.brand !== '' : this.newVehicle.brand !== '';
+            },
+            isYearValid(){
+                const year = parseInt(this.isEditing ? this.vehicleToEdit.year : this.newVehicle.year);
+                return year >= 1880 && year <= new Date().getFullYear();
+            },
+            isPurposeSelected(){
+                return this.isEditing ? this.vehicleToEdit.purpose !== '' : this.newVehicle.purpose !== '';
+            },
+            isLatLongValid(){
+                const lat = parseFloat(this.isEditing ? this.vehicleToEdit.latitude : this.newVehicle.latitude);
+                const long = parseFloat(this.isEditing ? this.vehicleToEdit.longitude : this.newVehicle.longitude);
+                return (lat >= -90 && lat <= 90) && (long >= -180 && long <= 180);
+            },
+            isConfortLevelSelected(){
+                return this.isEditing ? this.vehicleToEdit.confortLevel > 0 : this.newVehicle.confortLevel > 0;
+            },
+            vehicleExists(){
+                return this.vehicles.some(vehicle => this.newVehicle.plate === vehicle.plate);
+            },
+            getVehicleToEditIndex(){
+                return this.vehicles.findIndex(vehicle => this.vehicleToEdit.plate === vehicle.plate);
             }
         },
-        data() {
+        data(){
             return {
+                newVehicle: { plate: "", brand: "", model: "", year: "", color: "", purpose: "", zero: false, confortLevel: 0, latitude: "", longitude: "" },
+
                 vehicleToEdit: this.vehicle 
                 ? { ...this.vehicle } // Copia para não alterar diretamente a prop
-                : { plate: "", brand: "", model: "", year: 0, color: "", purpose: "", zero: false, confortLevel: 0, restingPlace: "" } // Novo veículo
+                : this.newVehicle,
+
+                vehicles: this.allVehicles,
+
+                errorMsg: ''
             };
         },
         methods:{
             close(){
                 this.$emit('onClose');
+            },
+
+            formatPlate() {
+                let rawValue = this.newVehicle.plate.toUpperCase().replace(/[^A-Z0-9]/g, ""); // Remove tudo que não for letra ou número
+
+                if (rawValue.length > 3) {
+                    rawValue = rawValue.replace(/^([A-Z]{3})(\d{0,4})/, "$1-$2"); // Adiciona o hífen depois de 3 letras
+                }
+
+                this.newVehicle.plate = rawValue.slice(0, 8); // Garante no máximo 8 caracteres (ABC-1234)
+            },
+
+            validateForm(event){
+                const form = event.target;
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                if (!this.isPlateValid)
+                    this.showError('Placa inválida!');
+                else if (!this.isBrandSelected)
+                    this.showError('Selecione uma marca!');
+                else if (!this.isYearValid)
+                    this.showError('Ano inválido!');
+                else if (!this.isPurposeSelected)
+                    this.showError('Selecione um propósito de uso!');
+                else if (!this.isLatLongValid)
+                    this.showError('Latitude e/ou longitude inválidos!');
+                else if (!this.isConfortLevelSelected)
+                    this.showError('Selecione o nível de conforto!');
+                else if(this.isEditing)
+                    this.editVehicle();
+                else
+                    this.registerVehicle();
+            },
+
+            showError(message) {
+                this.errorMsg = message;
+
+                setTimeout(() => {
+                    this.errorMsg = '';
+                }, 5000);
+            },
+
+            validateYear(event){
+                let year = event.target.value.replace(/\D/g, "");
+
+                if (year.length > 4) {
+                    year = year.slice(0, 4);
+                }
+
+                if(this.isEditing)
+                    this.vehicleToEdit.year = year;
+                else
+                    this.newVehicle.year = year;
+            },
+
+            validateLatitude(event) {
+                let lat = event.target.value.replace(/[^0-9.-]/g, "");
+                lat = lat.replace(/(?!^)-/g, "");
+                lat = lat.replace(/(\..*)\./g, "$1");
+
+                if(this.isEditing)
+                    this.vehicleToEdit.latitude = lat;
+                else
+                    this.newVehicle.latitude = lat;
+            },
+
+            validateLongitude(event) {
+                let long = event.target.value.replace(/[^0-9.-]/g, "");
+                long = long.replace(/(?!^)-/g, "");
+                long = long.replace(/(\..*)\./g, "$1");
+
+                if(this.isEditing)
+                    this.vehicleToEdit.longitude = long;
+                else
+                    this.newVehicle.longitude = long;
+            },
+
+            editVehicle(){
+                const index = this.getVehicleToEditIndex;
+                if(index !== -1)
+                    this.vehicles[index] = { ...this.vehicles[index], ...this.vehicleToEdit };
+                else
+                    this.showError('Veículo não encontrado!');
+            },
+
+            registerVehicle(){
+                if(!this.vehicleExists){
+                    this.vehicles.push(this.newVehicle);
+                    localStorage.setItem('vehicles', JSON.stringify(this.vehicles));
+                } else{
+                    this.showError('Essa placa já foi cadastrada!');
+                }
             }
         }
     }
@@ -102,7 +274,7 @@ import StarRating from './StarRating.vue';
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 10;
+        z-index: 2;
         width: 625px;
     }
 
@@ -221,5 +393,18 @@ import StarRating from './StarRating.vue';
         margin-right: 8px;
         cursor: pointer;
         transform: scale(1.3);
+    }
+
+    #error-message{
+        background-color: #E8363B;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #fff;
+        position: fixed;
+        top: 7%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
     }
 </style>

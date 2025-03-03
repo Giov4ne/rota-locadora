@@ -26,7 +26,7 @@
             </div>
         </section>
         <main>
-            <table>
+            <table v-if="vehicles.length">
                 <thead>
                     <tr>
                         <th>Placa</th>
@@ -67,18 +67,21 @@
                     </tr>
                 </tbody>
             </table>
+            <p v-else id="no-vehicles-msg">Não há veículos cadastrados até o momento...</p>
         </main>
         <VehicleEditRegistration 
             v-if="vehicleEditRegistrationIsOpen" 
             :vehicle="vehicleToEdit" 
-            @onClose="closeVehicleEditRegistration">
+            :allVehicles="vehicles"
+            @onClose="closeVehicleEditRegistration"
+            >
         </VehicleEditRegistration>
         <VehicleDetails
             v-if="vehicleDetailsIsOpen"
             :vehicle="vehicleToSeeDetails"
             @onCloseDetails="closeVehicleDetails"
         ></VehicleDetails>
-        <MyPagination></MyPagination>
+        <MyPagination v-if="vehicles.length >= 8"></MyPagination>
     </div>
 </template>
 
@@ -100,26 +103,26 @@ import MyPagination from './MyPagination.vue';
             VehicleDetails,
             MyPagination
         },
+
         data() {
             return {
                 plateInput: '',
-                vehicles: [
-                    { plate: "ABC-1234", brand: "BMW", model: " Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
+                vehicles: [/* { plate: "ABC-1234", brand: "BMW", model: "Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
 
-                    { plate: "ABC-1234", brand: "Chevrolet", model: "Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, latitude: "-26.278385", longitude: "-48.865418" },
+{ plate: "WXS-3321", brand: "Chevrolet", model: "Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, latitude: "-1.22", longitude: "-57.66" },
 
-                    { plate: "ABC-1234", brand: "Peugeot", model: "208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, latitude: "-26.278385", longitude: "-48.865418" },
+{ plate: "KLS-1278", brand: "Peugeot", model: "208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, latitude: "-30.96", longitude: "-39.71" },
 
-                    { plate: "ABC-1234", brand: "Audi", model: "A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
+{ plate: "ZHG-9585", brand: "Audi", model: "A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-27.63", longitude: "-35.16" },
 
-                    { plate: "ABC-1234", brand: "Jeep", model: "Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
+{ plate: "NBY-6617", brand: "Jeep", model: "Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, latitude: "-2.49", longitude: "-46.70" },
 
-                    { plate: "ABC-1234", brand: "Ford", model: "Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, latitude: "-26.278385", longitude: "-48.865418" },
+{ plate: "HAN-0693", brand: "Ford", model: "Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, latitude: "-15.32", longitude: "-41.78" },
 
-                    { plate: "ABC-1234", brand: "Fiat", model: "Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
-                    
-                    { plate: "ABC-1234", brand: "Ford", model: "KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, latitude: "-26.278385", longitude: "-48.865418" }
-                ],
+{ plate: "YMO-2420", brand: "Fiat", model: "Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-14.92", longitude: "-56.12" },
+
+{ plate: "MKU-2327", brand: "Ford", model: "KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, latitude: "-23.41", longitude: "-52.95" } */],
+                /*  */
                 optionsIsOpen: null,
                 vehicleEditRegistrationIsOpen: false,
                 vehicleDetailsIsOpen: false,
@@ -127,6 +130,7 @@ import MyPagination from './MyPagination.vue';
                 vehicleToSeeDetails: null
             };
         },
+
         methods: {
             clearPlateInput(){
                 this.plateInput = '';
@@ -195,6 +199,10 @@ import MyPagination from './MyPagination.vue';
                 this.vehicleDetailsIsOpen = false;
                 this.vehicleToSeeDetails = null;
             }
+        },
+
+        mounted(){
+            this.vehicles = JSON.parse(localStorage.getItem('vehicles')) !== null ? JSON.parse(localStorage.getItem('vehicles')) : [];
         }
     }
 </script>
@@ -444,7 +452,7 @@ import MyPagination from './MyPagination.vue';
         background-color: #fff;
         border-radius: 5px;
         box-shadow: 0 2px 4px #00000040;
-        z-index: 10;
+        z-index: 2;
     }
     
     .fade-enter-active, .fade-leave-active {
@@ -460,10 +468,17 @@ import MyPagination from './MyPagination.vue';
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 9;
+        z-index: 1;
         background-color: #0000008f;
         width: 100%;
         height: 100%;
+    }
+
+    #no-vehicles-msg{
+        margin: 80px 20px;
+        text-align: center;
+        font-size: 18px;
+        color: #333;
     }
 </style>
 

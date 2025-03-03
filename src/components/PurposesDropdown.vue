@@ -35,15 +35,12 @@
     export default{
         name: 'PurposesDropdown',
         props: {
-            selectedPurpose: {
-                type: String,
-                default: "" // Valor padrão vazio, caso não seja passado nenhum propósito
-            }
+            modelValue: String
         },
         data(){
             return{
                 purposesIsOpen: false,
-                localSelectedPurpose: this.selectedPurpose || '',
+                localSelectedPurpose: this.modelValue || '',
                 purposesOfUse: [
                     { label: "Uso pessoal", value: "personal-use" },
                     { label: "Veículo para locação", value: "vehicle-for-rent" },
@@ -59,12 +56,12 @@
             selectPurposeOption(purpose){
                 this.localSelectedPurpose = purpose.label; // Atualiza a variável com o valor do item clicado
                 this.purposesIsOpen = false;
-                this.$emit("update:selectedPurpose", this.localSelectedPurpose); // Emite o valor para o pai
+                this.$emit("update:modelValue", purpose.label); // Emite o valor para o pai
             },
 
             clearPurposeSelection(){
                 this.localSelectedPurpose = '';
-                this.$emit("update:selectedPurpose", ''); // Emite valor vazio para o pai
+                this.$emit("update:modelValue", ''); // Emite valor vazio para o pai
             }
         }
     }
