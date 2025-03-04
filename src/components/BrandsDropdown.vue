@@ -40,6 +40,7 @@
                                 type="checkbox"
                                 :value="brand.label"
                                 v-model="selectedBrands"
+                                @change="updateSelectedBrands"
                             />
                             {{ brand.label }}
                         </label>
@@ -60,13 +61,13 @@
         name: 'BrandsDropdown',
         props:{
             checkbox: Boolean,
-            modelValue: String
+            modelValue: [String, Array]
         },
         data(){
             return{
                 brandOptionsIsOpen: false,
-                selectedBrands: [],
-                localSelectedBrand: this.modelValue || '',
+                selectedBrands: this.checkbox ? (this.modelValue || []) : [],
+                localSelectedBrand: this.checkbox ? '' : (this.modelValue || ''),
                 brandOptions: [
                     { label: "Audi", value: "audi" },
                     { label: "BMW", value: "bmw" },
@@ -93,14 +94,27 @@
             },
 
             selectBrandOption(brand){
-                this.localSelectedBrand = brand.label; // Atualiza a variável com o valor do item clicado
-                this.brandOptionsIsOpen = false;
-                this.$emit('update:modelValue', brand.label); // Emite a alteração de volta para o componente pai
+                if (!this.checkbox) {
+                    this.localSelectedBrand = brand.label;
+                    this.brandOptionsIsOpen = false;
+                    this.$emit('update:modelValue', brand.label);
+                }
+            },
+
+            updateSelectedBrands() {
+                this.$emit('update:modelValue', [...this.selectedBrands]);
             }
         },
         watch: {
-            selectedBrand(newVal) {
-                this.localSelectedBrand = newVal;
+            modelValue: {
+                handler(newVal) {
+                    if (this.checkbox) {
+                        this.selectedBrands = Array.isArray(newVal) ? newVal : [];
+                    } else {
+                        this.localSelectedBrand = newVal || '';
+                    }
+                },
+                immediate: true
             }
         },
         mounted() {

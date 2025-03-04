@@ -5,10 +5,10 @@
             <button id="register-vehicle-btn" @click="openVehicleEditRegistration">Cadastrar Veículo</button>
             <div id="filters">
                 <div class="dropdown-boxes">
-                    <BrandsDropdown ref="brandsDropdownRef" :checkbox=true></BrandsDropdown>
+                    <BrandsDropdown ref="brandsDropdownRef" :checkbox=true v-model="selectedBrands"></BrandsDropdown>
                 </div>
                 <div class="dropdown-boxes">
-                    <PurposesDropdown ref="purposesDropdownRef"></PurposesDropdown>
+                    <PurposesDropdown ref="purposesDropdownRef" v-model="selectedPurpose"></PurposesDropdown>
                 </div>
                 <div class="custom-field">
                     <label for="plate">Placa</label>
@@ -26,7 +26,7 @@
             </div>
         </section>
         <main>
-            <table v-if="vehicles.length">
+            <table v-if="filteredVehicles.length">
                 <thead>
                     <tr>
                         <th>Placa</th>
@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(vehicle, index) in vehicles" :key="index">
+                    <tr v-for="(vehicle, index) in filteredVehicles" :key="index">
                         <td>{{ vehicle.plate }}</td>
                         <td>{{ vehicle.brand }} {{ vehicle.model }}</td>
                         <td>{{ vehicle.year }}</td>
@@ -67,7 +67,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p v-else id="no-vehicles-msg">Não há veículos cadastrados até o momento...</p>
+            <p v-else id="no-vehicles-msg">Nenhum veículo encontrado...</p>
         </main>
         <VehicleEditRegistration 
             v-if="vehicleEditRegistrationIsOpen" 
@@ -82,7 +82,7 @@
             :vehicle="vehicleToSeeDetails"
             @onCloseDetails="closeVehicleDetails"
         ></VehicleDetails>
-        <MyPagination v-if="vehicles.length >= 8"></MyPagination>
+        <MyPagination v-if="filteredVehicles.length >= 10"></MyPagination>
     </div>
     <span v-if="successMsg !== ''" class="success-message">{{ successMsg }}</span>
 </template>
@@ -108,9 +108,12 @@ import MyPagination from './MyPagination.vue';
 
         data() {
             return {
+                selectedBrands: [],
+                selectedPurpose: '',
                 plateInput: '',
                 activities: [],
                 vehicles: [],
+                filteredVehicles: [],
                 /* 
                 VALORES DE EXEMPLO
                 { plate: "ABC-1234", brand: "BMW", model: "Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
@@ -141,12 +144,33 @@ import MyPagination from './MyPagination.vue';
         methods: {
             clearPlateInput(){
                 this.plateInput = '';
+                this.filterVehicles();
             },
 
             erase(){
                 this.$refs.brandsDropdownRef.clearBrandsSelection();
                 this.$refs.purposesDropdownRef.clearPurposeSelection();
                 this.clearPlateInput();
+                this.filterVehicles();
+            },
+
+            filterVehicles() {
+                if (!this.selectedBrands.length && !this.selectedPurpose && !this.plateInput) {
+                    this.filteredVehicles = this.vehicles;
+                    return;
+                }
+
+                const searchPlate = this.plateInput.toLowerCase();
+
+                this.filteredVehicles = this.vehicles.filter(vehicle => {
+                    return (
+                        (this.selectedBrands.length === 0 || this.selectedBrands.includes(vehicle.brand)) &&
+                        (!this.selectedPurpose || vehicle.purpose === this.selectedPurpose) &&
+                        (!this.plateInput || 
+                            vehicle.plate.toLowerCase().includes(searchPlate) ||
+                            vehicle.color.toLowerCase().includes(searchPlate))
+                    );
+                });
             },
 
             optionsToggleDropdown(index){
@@ -217,9 +241,16 @@ import MyPagination from './MyPagination.vue';
             }
         },
 
+        watch: {
+            selectedBrands: 'filterVehicles',
+            selectedPurpose: 'filterVehicles',
+            plateInput: 'filterVehicles'
+        },
+
         mounted(){
             this.vehicles = JSON.parse(localStorage.getItem('vehicles')) !== null ? JSON.parse(localStorage.getItem('vehicles')) : [];
             this.activities = JSON.parse(localStorage.getItem('activityHistory')) !== null ? JSON.parse(localStorage.getItem('activityHistory')) : [];
+            this.filteredVehicles = this.vehicles;
         }
     }
 </script>

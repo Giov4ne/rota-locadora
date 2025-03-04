@@ -4,7 +4,7 @@
         <section id="filters-section">
             <div class="custom-field">
                 <label for="plate">Placa</label>
-                <input type="text" class="inputs" name="plate" placeholder="Digite a placa ou a cor do veículo" v-model="plateInput">
+                <input type="text" class="inputs" name="plate" placeholder="Digite a placa do veículo" v-model="plateInput">
             </div>
             <div id="search-erase">
                 <button class="search-btn">
@@ -18,14 +18,14 @@
         </section>
         <main>
             <ul v-if="activities.length" id="activity-list">
-                <li v-for="(activity, index) in activities" :key="index">
+                <li v-for="(activity, index) in filteredActivities" :key="index">
                     <span :class="getActivityIcon(activity.type)"></span>
                     Veículo <strong>{{ activity.plate }}</strong> {{ getActivityTypeToString(activity.type) }} em {{ activity.date }} às {{ activity.time }}
                 </li>
             </ul>
             <p v-else id="no-history-activity">Não há veículos cadastrados até o momento...</p>
         </main>
-        <MyPagination v-if="activities.length >= 8"></MyPagination>
+        <MyPagination v-if="activities.length >= 10"></MyPagination>
     </div>
 </template>
 
@@ -42,6 +42,7 @@ import MyPagination from './MyPagination.vue';
         data(){
             return{
                 activities: [],
+                filteredActivities: [],
                 plateInput: ''
             }
         },
@@ -49,6 +50,7 @@ import MyPagination from './MyPagination.vue';
             erase(){
                 this.plateInput = '';
             },
+
             getActivityIcon(type){
                 let icon = '';
                 switch(type){
@@ -64,6 +66,7 @@ import MyPagination from './MyPagination.vue';
                 }
                 return icon;
             },
+
             getActivityTypeToString(type){
                 let string = '';
                 switch(type){
@@ -78,10 +81,27 @@ import MyPagination from './MyPagination.vue';
                         break;
                 }
                 return string.toUpperCase();
+            },
+
+            filterActivities(){
+                if (!this.plateInput) {
+                    this.filteredActivities = this.activities;
+                    return;
+                }
+                const searchPlate = this.plateInput.toLowerCase();
+
+                this.filteredActivities = this.activities.filter(activity => {
+                    return activity.plate.toLowerCase().includes(searchPlate);
+                });
             }
+        },
+
+        watch: {
+            plateInput: 'filterActivities'
         },
         mounted(){
             this.activities = JSON.parse(localStorage.getItem('activityHistory')) !== null ? JSON.parse(localStorage.getItem('activityHistory')) : [];
+            this.filteredActivities = this.activities;
         }
     }
 </script>
