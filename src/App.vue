@@ -1,14 +1,15 @@
 <template>
   <!-- <LoginForm></LoginForm> -->
   <!-- <SigninForm></SigninForm> -->
-  <HomePage></HomePage>
+  <!-- <HomePage></HomePage> -->
   <!-- <ActivityHistory></ActivityHistory> -->
+  <router-view></router-view>
 </template>
 
 <script>
 /* import ActivityHistory from './components/ActivityHistory.vue'; */
 
-import HomePage from './components/HomePage.vue';
+/* import HomePage from './components/HomePage.vue'; */
 
 /* import SigninForm from './components/SigninForm.vue'; */
 
@@ -16,12 +17,12 @@ import HomePage from './components/HomePage.vue';
 
 export default {
   name: 'App',
-  components: {
-    /* LoginForm */
-    /* SigninForm */
+  /* components: {
+    LoginForm
+    SigninForm
     HomePage
-    /* ActivityHistory */
-  }
+    ActivityHistory
+  } */
 }
 </script>
 
@@ -219,5 +220,34 @@ export default {
 
   .success-message{
     background-color: #4CAF50;
+  }
+
+  @media screen and (max-width: 550px){
+    #login-form, #signin-form{
+      width: 92%;
+      padding: 28px 30px 30px 30px;
+    }
+
+    .fa-eye, .fa-eye-slash{
+      width: 38px;
+    }
+  }
+
+  @media screen and (max-width: 490px){
+    .container{
+        margin-top: 105px;
+    }
+  }
+
+  @media screen and (max-width: 348px){
+    .container{
+      margin-top: 160px;
+    }
+  }
+
+  @media screen and (max-width: 180px){
+    .container{
+      margin-top: 175px;
+    }
   }
 </style>

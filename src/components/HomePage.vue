@@ -265,6 +265,11 @@ import MyPagination from './MyPagination.vue';
         width: 255px;
     }
 
+    #search-erase{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
     table{
         border-collapse: collapse;
         width: 100%;
@@ -497,28 +502,57 @@ import MyPagination from './MyPagination.vue';
         font-size: 18px;
         color: #333;
     }
+
+    @media screen and (max-width: 1005px){
+        #register-and-filters{
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #register-vehicle-btn{
+            margin-bottom: 15px;
+        }
+    }
+
+    @media screen and (max-width: 905px){
+        #filters{
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #filters > *, .dropdown-boxes > *{
+            margin: auto auto 10px auto;
+        }
+
+        #filters .custom-field, #filters .dropdown-boxes, #filters .dropdown-boxes .custom-dropbox{
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 712px){
+        table{
+            min-width: 0;
+        }
+
+        table tr th, table tr td{
+            word-break: break-all;
+            padding: 3px 6px;
+            font-size: 12px;
+        }
+
+        table tr td .ellipsis{
+            font-size: 22px;
+        }
+    }
+
+    @media screen and (max-width: 280px){
+        table tr th, table tr td{
+            padding: 2px;
+            font-size: 10px;
+        }
+
+        table tr td .ellipsis{
+            font-size: 20px;
+        }
+    }
 </style>
-
-<!-- 
-USAR STAR RATING NO COMPONENTE PAI
-<template>
-  <div>
-    <h2>Avalie o veículo:</h2>
-    <StarRating v-model="vehicleRating" />
-    <p>Sua avaliação: {{ vehicleRating }}</p>
-  </div>
-</template>
-
-<script>
-import StarRating from './StarRating.vue';
-
-export default {
-  components: { StarRating },
-  data() {
-    return {
-      vehicleRating: 3 // Valor inicial
-    };
-  }
-};
-</script>
--->

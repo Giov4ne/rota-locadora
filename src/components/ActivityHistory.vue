@@ -142,4 +142,29 @@ import MyPagination from './MyPagination.vue';
         font-size: 18px;
         color: #333;
     }
+
+    @media screen and (max-width: 480px){
+        #filters-section{
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #filters-section .custom-field{
+            width: 100%;
+            margin: 0 0 10px 0;
+        }
+
+        #search-erase{
+            display: flex;
+            flex-wrap: nowrap;
+            margin: 0 0 10px 0;
+        }
+    } 
+
+    @media screen and (max-width: 180px){
+        #activity-list li{
+            padding: 10px;
+            word-wrap: break-word;
+        }
+    }
 </style>

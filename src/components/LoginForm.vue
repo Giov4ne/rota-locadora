@@ -1,6 +1,6 @@
 <template>
     <div class="login-signin-container">
-        <form id="login-form" @submit.prevent="checkLogin">
+        <form id="login-form" @submit.prevent="login">
             <span class="fa fa-car"></span>
             <h2 class="form-title">Login</h2>
             <div class="custom-field">
@@ -16,8 +16,9 @@
                 <!-- <span class="fa fa-eye-slash"></span> -->
             </div>
             <input type="submit" class="submit-btn" value="ENTRAR">
-            <a href="" class="signin-login-link">Criar conta</a>
+            <router-link to="/signin" class="signin-login-link">Criar conta</router-link>
         </form>
+        <span v-if="errorMsg !== ''" class="error-message">{{ errorMsg }}</span>
     </div>
 </template>
 
@@ -30,7 +31,8 @@
                 showHideBtn: 'fa fa-eye',
                 email: '',
                 password: '',
-                registeredUsers: []
+                registeredUsers: [],
+                errorMsg: ''
             }
         },
         methods:{
@@ -44,22 +46,30 @@
                 }
             },
 
-            checkLogin(){
+            login(){
                 const user = this.getUserByEmail();
                 if(user){
                     if(this.password === user.password){
-                        alert('Senhas correspondem');
                         localStorage.setItem('loggedUser', JSON.stringify(user));
+                        this.$router.push('/home');
+                    } else{
+                        this.showError('Senha incorreta!');
                     }
-                    else
-                        alert('Senha incorreta!');
                 } else{
-                    alert('Este e-mail não foi cadastrado!');                
+                    this.showError('Este e-mail não foi cadastrado!');                
                 }
             },
 
             getUserByEmail(){
                 return this.registeredUsers.find(user => this.email === user.email) || null;
+            },
+
+            showError(message) {
+                this.errorMsg = message;
+
+                setTimeout(() => {
+                    this.errorMsg = '';
+                }, 5000);
             }
         },
         mounted(){

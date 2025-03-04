@@ -89,8 +89,9 @@
                 </div>
             </div>
             <input type="submit" class="submit-btn" value="CADASTRAR">
-            <a href="" class="signin-login-link">Fazer login</a>      
+            <router-link to="/login" class="signin-login-link">Fazer login</router-link>
         </form>
+        <span v-if="errorMsg !== ''" class="error-message">{{ errorMsg }}</span>
     </div>
 </template>
 
@@ -105,7 +106,8 @@
                 password: '',
                 inputType: 'password',
                 showHideBtn: 'fa fa-eye',
-                registeredUsers: []
+                registeredUsers: [],
+                errorMsg: ''
             };
         },
         computed: {
@@ -134,6 +136,7 @@
                     this.showHideBtn = 'fa fa-eye';
                 }
             },
+
             validateForm(event) {
                 const form = event.target;
                 if (!form.checkValidity()) {
@@ -141,6 +144,7 @@
                     return;
                 }
             },
+
             registerUser(){
                 if(!this.userExists){
                     this.registeredUsers.push({
@@ -150,10 +154,18 @@
                         password: this.password
                     });
                     localStorage.setItem('registeredUsers', JSON.stringify(this.registeredUsers));
-                    alert('Usuário cadastrado com sucesso!');
+                    this.$router.push('/login');
                 } else{
-                    alert('Já existe um usuário cadastrado com este e-mail!');
+                    this.showError('Já existe um usuário cadastrado com este e-mail!');
                 }
+            },
+
+            showError(message) {
+                this.errorMsg = message;
+
+                setTimeout(() => {
+                    this.errorMsg = '';
+                }, 5000);
             }
         },
         mounted(){

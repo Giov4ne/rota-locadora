@@ -1,13 +1,13 @@
 <template>
     <header>
         <nav id="header-navigation">
-            <a href="" id="rl-logo">
+            <router-link to="/home" id="rl-logo">
                 <span class="fa fa-car" id="logo-icon"></span>
                 <span id="logo-text">RotaLocadora</span>
-            </a>
+            </router-link>
             <div id="pages">
-                <a href="" class="page">VEÍCULOS</a>
-                <a href="" class="page">HISTÓRICO DE ATIVIDADES</a>
+                <router-link to="/home" class="page">VEÍCULOS</router-link>
+                <router-link to="/activities" class="page">HISTÓRICO DE ATIVIDADES</router-link>
             </div>
         </nav>
         <div id="user-info">
@@ -18,7 +18,7 @@
             <div class="exit-dropdown-container">
                 <img src="../assets/user.png" alt="user image" id="user-img" @click="exitToggleDropdown">
                 <transition name="fade">
-                    <div v-if="exitIsOpen" class="exit-dropdown">
+                    <div v-if="exitIsOpen" @click="logout" class="exit-dropdown">
                         <span class="fa fa-right-from-bracket"></span>
                         <span>Sair</span>
                     </div>
@@ -41,6 +41,11 @@
         methods:{
             exitToggleDropdown(){
                 this.exitIsOpen = !this.exitIsOpen;
+            },
+
+            logout(){
+                localStorage.removeItem('loggedUser');
+                this.$router.replace('/login');
             }
         },
 
@@ -118,9 +123,13 @@
         letter-spacing: 1px;
 
         &:hover{
-            background-color: #007DF01A;
-            color: #007DF0;
+            background-color: #d3d3d3;
         }
+    }
+
+    .router-link-active.page, .router-link-exact-active.page {
+        background-color: #007DF01A;
+        color: #007DF0;
     }
 
     #greeting{
@@ -168,5 +177,28 @@
     .exit-dropdown .fa-right-from-bracket{
         margin-right: 5px;
         font-size: 16px;
+    }
+
+    @media screen and (max-width: 665px){
+        #rl-logo{
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 490px){
+        header, #header-navigation{
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #pages{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;   
+        }
+
+        .page{
+            margin: 0 8px 10px 8px;
+        }
     }
 </style>

@@ -299,6 +299,7 @@ import StarRating from './StarRating.vue';
         justify-content: space-between;
         align-items: center;
         padding: 25px 30px 25px 20px;
+        border-radius: 5px 5px 0 0;
         color: #fff;
         width: 100%;
     }
@@ -318,6 +319,7 @@ import StarRating from './StarRating.vue';
     .form-body{
         background-color: #fff;
         padding: 28px;
+        border-radius: 0 0 5px 5px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(8, 1fr);
@@ -408,5 +410,60 @@ import StarRating from './StarRating.vue';
         margin-right: 8px;
         cursor: pointer;
         transform: scale(1.3);
+    }
+
+    @media screen and (max-width: 680px){
+        #vehicle-edit-registration-form{
+            width: 92%;
+        }
+
+        .form-header{
+            padding: 20px 25px 20px 15px;
+        }
+
+        .form-body{
+            padding: 23px;
+        }
+    }
+
+    @media screen and (max-width: 475px){
+        .form-header-title{
+            margin-right: 6px;
+        }
+
+        .form-body{
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .form-body::-webkit-scrollbar {
+            width: 6px; /* Define a largura da barra de rolagem */
+        }
+
+        .form-body::-webkit-scrollbar-track {
+            background-color: #F0F0F0; /* Define a cor de fundo da trilha da rolagem */
+        }
+
+        .form-body::-webkit-scrollbar-thumb {
+            background-color: #3366CC; /* Define a cor do tracinho da rolagem */
+            border-radius: 5px; /* Arredonda as bordas do tracinho */
+        }
+
+        .form-body::-webkit-scrollbar-thumb:hover {
+            background-color: #005bb5; /* Muda a cor do tracinho ao passar o mouse */
+        }
+
+        #resting-place{
+            margin: 12px 0 5px 0;
+        }
+
+        #confort-level{
+            flex-direction: column;
+        }
+
+        #confort-level-p{
+            margin: 12px 0 0 0;
+        }
     }
 </style>

@@ -45,4 +45,15 @@
         background-color: #007DF0;
         color: #fff;
     }
+
+    @media screen and (max-width: 250px){
+        .pagination{
+            flex-wrap: wrap;
+        }
+
+        .pagination-btns{
+            font-size: 12px;
+            margin: 5px;
+        }
+    }
 </style>
