@@ -11,7 +11,7 @@
                 <input v-model="vehicleToEdit.plate" disabled type="text" class="inputs" name="plate">
             </div>
             <div id="brand">
-                <BrandsDropdown :checkbox=false v-model="vehicleToEdit.brand"></BrandsDropdown>
+                <BrandsDropdown :checkbox=false v-model="vehicleToEdit.brand" @click.prevent></BrandsDropdown>
             </div> 
             <div class="custom-field" id="model">
                 <label for="model">Modelo</label>
@@ -26,7 +26,7 @@
                 <input v-model="vehicleToEdit.color" type="text" class="inputs" name="color" placeholder="Digite a cor do veículo">
             </div>
             <div id="purpose">
-                <PurposesDropdown v-model="vehicleToEdit.purpose"></PurposesDropdown>
+                <PurposesDropdown v-model="vehicleToEdit.purpose" @click.prevent></PurposesDropdown>
             </div>
             <p id="resting-place">Local de repouso do veículo</p>
             <div class="custom-field" id="latitude">

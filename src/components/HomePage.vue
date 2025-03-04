@@ -210,6 +210,7 @@ import MyPagination from './MyPagination.vue';
             deleteVehicle(vehiclePlate) {
                 this.vehicles = this.vehicles.filter(vehicle => vehicle.plate !== vehiclePlate);
                 localStorage.setItem('vehicles', JSON.stringify(this.vehicles));
+                this.filteredVehicles = this.vehicles;
                 const today = new Date().toLocaleDateString('pt-BR');
                 const timeNow = new Date().toLocaleTimeString('pt-BR', { hour12: false });
                 this.activities.push({ type: 'delete', plate: vehiclePlate, date: today, time: timeNow });
