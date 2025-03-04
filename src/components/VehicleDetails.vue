@@ -94,6 +94,7 @@ import MapView from './MapView.vue';
         justify-content: space-between;
         align-items: center;
         padding: 25px 30px 25px 20px;
+        border-radius: 5px 5px 0 0;
         color: #fff;
         width: 100%;
     }
@@ -101,12 +102,14 @@ import MapView from './MapView.vue';
     #details-header-title{
         font-size: 18px;
         font-weight: 400;
+        margin-right: 8px;
         cursor: default;
     }
 
     #details-body{
         background-color: #fff;
         padding: 25px;
+        border-radius: 0 0 5px 5px;
     }
 
     #details-grid{
@@ -118,6 +121,7 @@ import MapView from './MapView.vue';
         border-radius: 5px;
         padding: 15px;
         margin-bottom: 13px;
+        border-radius: 0 0 5px 5px;
     }
 
     .grid-element-title{
@@ -145,5 +149,58 @@ import MapView from './MapView.vue';
 
     #plate-grid-p{
         font-weight: 700;
+    }
+
+    @media screen and (max-width: 840px){
+        #vehicle-details{
+            width: 92%;
+        }
+
+        #details-header{
+            padding: 20px 25px 20px 15px;
+        }
+
+        #details-grid{
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 12px;
+        }
+    }
+
+    @media screen and (max-width: 380px){
+        #details-grid{
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        #details-body{
+            overflow-y: auto;
+            max-height: 500px;
+        }
+
+        #details-body::-webkit-scrollbar {
+            width: 6px; /* Define a largura da barra de rolagem */
+        }
+
+        #details-body::-webkit-scrollbar-track {
+            background-color: #F0F0F0; /* Define a cor de fundo da trilha da rolagem */
+        }
+
+        #details-body::-webkit-scrollbar-thumb {
+            background-color: #3366CC; /* Define a cor do tracinho da rolagem */
+            border-radius: 5px; /* Arredonda as bordas do tracinho */
+        }
+
+        #details-body::-webkit-scrollbar-thumb:hover {
+            background-color: #005bb5; /* Muda a cor do tracinho ao passar o mouse */
+        }
+    }
+
+    @media screen and (max-width: 275px){
+        #details-grid{
+            grid-template-rows: repeat(9, 1fr);
+            grid-template-columns: 1fr;
+        }
     }
 </style>
