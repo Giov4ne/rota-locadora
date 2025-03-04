@@ -1,24 +1,15 @@
-# teste-frontend-giovane
+<h1 align="center">Rota Locadora 🚗</h1>
 
-## Project setup
-```
-npm install
-```
+## 📚 Sobre
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Este projeto consiste no desenvolvimento de um sistema de gerenciamento de veículos, permitindo o usuário cadastrar, remover, editar e ver veículos cadastrados, podendo filtrar os veículos por placa, marca e/ou propósito de uso.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 💻 Tecnologias Utilizadas
 
-### Lints and fixes files
-```
-npm run lint
-```
+* HTML5
+* CSS3
+* Javascript
+* Vue.js
+* Node.js
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Desenvolvido com 💗 por [Giovane](https://github.com/Giov4ne).
