@@ -25,7 +25,7 @@
                     (+{{ selectedBrands.length - 1 }})
                 </span>
             </span>
-            <span :class="{ 'rotate-up': brandOptionsIsOpen }" class="arrow"> <!-- Seta -->
+            <span :class="{ 'rotate-up': brandOptionsIsOpen }" class="arrow">
                 &#9660;
             </span>
         </button>
@@ -118,7 +118,6 @@
             }
         },
         mounted() {
-            // Se a marca estiver definida ao editar, ela será atribuída
             if (this.modelValue) {
                 this.localSelectedBrand = this.modelValue;
             }

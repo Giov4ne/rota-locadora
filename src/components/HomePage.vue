@@ -376,7 +376,7 @@ import MyPagination from './MyPagination.vue';
         cursor: pointer;
         display: flex;
         align-items: center;
-        width: 100%; /* Ocupa toda a largura do dropdown */
+        width: 100%;
         
         &:hover{
             background-color: #f0f0f086;
@@ -388,7 +388,7 @@ import MyPagination from './MyPagination.vue';
     }
     
     .arrow {
-        margin-left: auto; /* Move a flecha para a direita */
+        margin-left: auto;
         transition: transform 0.3s ease;
         color: #333;
     }
@@ -414,7 +414,7 @@ import MyPagination from './MyPagination.vue';
         padding: 1px 5px;
         border-radius: 100px;
         margin-left: 4px;
-        line-height: 100%; /* Faz o X ficar no centro verticalmente */
+        line-height: 100%;
         display: inline-block;
     }
     
@@ -428,7 +428,7 @@ import MyPagination from './MyPagination.vue';
         flex-direction: column;
         z-index: 10;
         margin-top: 5px;
-        width: 100%; /* Mantém a largura alinhada ao botão */
+        width: 100%;
     }
 
     .dropdown-menu .dropdown-menu-title{
@@ -440,14 +440,14 @@ import MyPagination from './MyPagination.vue';
     .dropdown-menu hr{
         border: none;
         height: 1px;
-        background-color: #A9A7A9; /* Azul (pode trocar pela cor desejada) */
+        background-color: #A9A7A9; 
     }
 
     .dropdown-menu .dropdown-menu-content, .dropdown-menu .dropdown-menu-content-purpose{
         display: flex;
         flex-direction: column;
         font-size: 14px;
-        max-height: 150px; /* Define uma altura máxima para ativar a rolagem */
+        max-height: 150px; 
         overflow-y: auto;
     }
 
@@ -456,20 +456,20 @@ import MyPagination from './MyPagination.vue';
     }
 
     .dropdown-menu .dropdown-menu-content::-webkit-scrollbar {
-        width: 6px; /* Define a largura da barra de rolagem */
+        width: 6px; 
     }
 
     .dropdown-menu .dropdown-menu-content::-webkit-scrollbar-track {
-        background-color: #F0F0F0; /* Define a cor de fundo da trilha da rolagem */
+        background-color: #F0F0F0;
     }
 
     .dropdown-menu .dropdown-menu-content::-webkit-scrollbar-thumb {
-        background-color: #3366CC; /* Define a cor do tracinho da rolagem */
-        border-radius: 5px; /* Arredonda as bordas do tracinho */
+        background-color: #3366CC;
+        border-radius: 5px; 
     }
 
     .dropdown-menu .dropdown-menu-content::-webkit-scrollbar-thumb:hover {
-        background-color: #005bb5; /* Muda a cor do tracinho ao passar o mouse */
+        background-color: #005bb5; 
     }
 
     .dropdown-menu .dropdown-menu-content label{

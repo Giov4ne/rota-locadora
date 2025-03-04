@@ -115,14 +115,14 @@ import StarRating from './StarRating.vue';
         props:{
             vehicle: {
                 type: Object,
-                default: () => null // Se não for passado, será tratado como null
+                default: () => null
             },
             allVehicles: Array,
             allActivities: Array
         },
         computed: {
             isEditing(){
-                return this.vehicle !== null; // Se for null, está criando
+                return this.vehicle !== null;
             },
             isPlateValid(){
                 return /^[A-Z]{3}-\d{4}$/.test(this.isEditing ? this.vehicleToEdit.plate : this.newVehicle.plate);
@@ -438,20 +438,20 @@ import StarRating from './StarRating.vue';
         }
 
         .form-body::-webkit-scrollbar {
-            width: 6px; /* Define a largura da barra de rolagem */
+            width: 6px; 
         }
 
         .form-body::-webkit-scrollbar-track {
-            background-color: #F0F0F0; /* Define a cor de fundo da trilha da rolagem */
+            background-color: #F0F0F0;
         }
 
         .form-body::-webkit-scrollbar-thumb {
-            background-color: #3366CC; /* Define a cor do tracinho da rolagem */
-            border-radius: 5px; /* Arredonda as bordas do tracinho */
+            background-color: #3366CC; 
+            border-radius: 5px;         
         }
 
         .form-body::-webkit-scrollbar-thumb:hover {
-            background-color: #005bb5; /* Muda a cor do tracinho ao passar o mouse */
+            background-color: #005bb5; 
         }
 
         #resting-place{

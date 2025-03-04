@@ -16,7 +16,7 @@
 <script>
   export default {
     props: {
-      modelValue: Number // Permite v-model no componente pai
+      modelValue: Number 
     },
     data() {
       return {
@@ -27,7 +27,7 @@
     methods: {
       rate(star) {
         this.selectedRating = star;
-        this.$emit("update:modelValue", star); // Atualiza o valor no pai (v-model)
+        this.$emit("update:modelValue", star);
       },
       hover(star) {
         this.hoveredStar = star;

@@ -11,7 +11,7 @@
                 </span>
                 <span class="close-selected" @click.stop="clearPurposeSelection">x</span>
             </span>
-            <span :class="{ 'rotate-up': purposesIsOpen }" class="arrow"> <!-- Seta -->
+            <span :class="{ 'rotate-up': purposesIsOpen }" class="arrow">
                 &#9660;
             </span>
         </button>
@@ -54,14 +54,14 @@
             },
 
             selectPurposeOption(purpose){
-                this.localSelectedPurpose = purpose.label; // Atualiza a variável com o valor do item clicado
+                this.localSelectedPurpose = purpose.label;
                 this.purposesIsOpen = false;
-                this.$emit("update:modelValue", purpose.label); // Emite o valor para o pai
+                this.$emit("update:modelValue", purpose.label);
             },
 
             clearPurposeSelection(){
                 this.localSelectedPurpose = '';
-                this.$emit("update:modelValue", ''); // Emite valor vazio para o pai
+                this.$emit("update:modelValue", '');
             }
         }
     }

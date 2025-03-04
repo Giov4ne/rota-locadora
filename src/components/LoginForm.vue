@@ -13,7 +13,6 @@
                     <input :type="inputType" class="inputs password" v-model="password" name="password" placeholder="Digite a senha" required>
                     <span :class="showHideBtn" @click="showHidePassword"></span>
                 </div>
-                <!-- <span class="fa fa-eye-slash"></span> -->
             </div>
             <input type="submit" class="submit-btn" value="ENTRAR">
             <router-link to="/signin" class="signin-login-link">Criar conta</router-link>

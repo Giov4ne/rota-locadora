@@ -180,20 +180,20 @@ import MapView from './MapView.vue';
         }
 
         #details-body::-webkit-scrollbar {
-            width: 6px; /* Define a largura da barra de rolagem */
+            width: 6px; 
         }
 
         #details-body::-webkit-scrollbar-track {
-            background-color: #F0F0F0; /* Define a cor de fundo da trilha da rolagem */
+            background-color: #F0F0F0;
         }
 
         #details-body::-webkit-scrollbar-thumb {
-            background-color: #3366CC; /* Define a cor do tracinho da rolagem */
-            border-radius: 5px; /* Arredonda as bordas do tracinho */
+            background-color: #3366CC; 
+            border-radius: 5px;
         }
 
         #details-body::-webkit-scrollbar-thumb:hover {
-            background-color: #005bb5; /* Muda a cor do tracinho ao passar o mouse */
+            background-color: #005bb5; 
         }
     }
 

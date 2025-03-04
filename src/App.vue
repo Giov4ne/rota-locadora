@@ -1,29 +1,13 @@
 <template>
-  <!-- <LoginForm></LoginForm> -->
-  <!-- <SigninForm></SigninForm> -->
-  <!-- <HomePage></HomePage> -->
-  <!-- <ActivityHistory></ActivityHistory> -->
   <router-view></router-view>
 </template>
 
 <script>
-/* import ActivityHistory from './components/ActivityHistory.vue'; */
-
-/* import HomePage from './components/HomePage.vue'; */
-
-/* import SigninForm from './components/SigninForm.vue'; */
-
-/* import LoginForm from './components/LoginForm.vue'; */
 
 export default {
   name: 'App',
-  /* components: {
-    LoginForm
-    SigninForm
-    HomePage
-    ActivityHistory
-  } */
 }
+
 </script>
 
 <style>
