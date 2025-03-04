@@ -17,19 +17,15 @@
             <span class="fa fa-filter filter-btn"></span>
         </section>
         <main>
-            <ul id="activity-list">
-                <li><span class="fa fa-plus"></span>Veículo <strong>ABC-1234</strong> CADASTRADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-pencil"></span>Veículo <strong>ABC-1234</strong> EDITADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-trash"></span>Veículo <strong>ABC-1234</strong> DELETADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-plus"></span>Veículo <strong>ABC-1234</strong> CADASTRADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-pencil"></span>Veículo <strong>ABC-1234</strong> EDITADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-trash"></span>Veículo <strong>ABC-1234</strong> DELETADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-plus"></span>Veículo <strong>ABC-1234</strong> CADASTRADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-pencil"></span>Veículo <strong>ABC-1234</strong> EDITADO em 10/01/2024 às 17:57:36</li>
-                <li><span class="fa fa-trash"></span>Veículo <strong>ABC-1234</strong> DELETADO em 10/01/2024 às 17:57:36</li>
+            <ul v-if="activities.length" id="activity-list">
+                <li v-for="(activity, index) in activities" :key="index">
+                    <span :class="getActivityIcon(activity.type)"></span>
+                    Veículo <strong>{{ activity.plate }}</strong> {{ getActivityTypeToString(activity.type) }} em {{ activity.date }} às {{ activity.time }}
+                </li>
             </ul>
+            <p v-else id="no-history-activity">Não há veículos cadastrados até o momento...</p>
         </main>
-        <MyPagination></MyPagination>
+        <MyPagination v-if="activities.length >= 8"></MyPagination>
     </div>
 </template>
 
@@ -45,13 +41,47 @@ import MyPagination from './MyPagination.vue';
         },
         data(){
             return{
+                activities: [],
                 plateInput: ''
             }
         },
         methods:{
             erase(){
                 this.plateInput = '';
+            },
+            getActivityIcon(type){
+                let icon = '';
+                switch(type){
+                    case 'register':
+                        icon = 'fa fa-plus';
+                        break;
+                    case 'edit':
+                        icon = 'fa fa-pencil';
+                        break;
+                    case 'delete':
+                        icon = 'fa fa-trash';
+                        break;
+                }
+                return icon;
+            },
+            getActivityTypeToString(type){
+                let string = '';
+                switch(type){
+                    case 'register':
+                        string = 'cadastrado';
+                        break;
+                    case 'edit':
+                        string = 'editado';
+                        break;
+                    case 'delete':
+                        string = 'deletado';
+                        break;
+                }
+                return string.toUpperCase();
             }
+        },
+        mounted(){
+            this.activities = JSON.parse(localStorage.getItem('activityHistory')) !== null ? JSON.parse(localStorage.getItem('activityHistory')) : [];
         }
     }
 </script>
@@ -104,5 +134,12 @@ import MyPagination from './MyPagination.vue';
 
     #activity-list li .fa-trash{
         color: #E8363B;
+    }
+
+    #no-history-activity{
+        margin: 80px 20px;
+        text-align: center;
+        font-size: 18px;
+        color: #333;
     }
 </style>

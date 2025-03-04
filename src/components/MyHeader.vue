@@ -13,7 +13,7 @@
         <div id="user-info">
             <div id="greeting">
                 <p>Olá</p>
-                <p id="name">Maria Clara da Silva</p>
+                <p id="name">{{ getUsername }}</p>
             </div>
             <div class="exit-dropdown-container">
                 <img src="../assets/user.png" alt="user image" id="user-img" @click="exitToggleDropdown">
@@ -33,7 +33,8 @@
         name: 'MyHeader',
         data(){
             return{
-                exitIsOpen: false
+                exitIsOpen: false,
+                username: ''
             }
         },
 
@@ -41,6 +42,16 @@
             exitToggleDropdown(){
                 this.exitIsOpen = !this.exitIsOpen;
             }
+        },
+
+        computed:{
+            getUsername(){
+                return this.username !== '' ? this.username : 'Usuário';
+            }
+        },
+
+        mounted(){
+            this.username = JSON.parse(localStorage.getItem('loggedUser')).username;
         }
     }
 </script>

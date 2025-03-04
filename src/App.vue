@@ -203,4 +203,21 @@ export default {
   ul li{
     list-style: none;
   }
+
+  .error-message, .success-message{
+    background-color: #E8363B;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+    position: fixed;
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .success-message{
+    background-color: #4CAF50;
+  }
 </style>

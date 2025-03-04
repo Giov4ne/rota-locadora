@@ -58,7 +58,7 @@
                                         <ul>
                                             <li @click="vehicleDetails(vehicle)">Detalhes</li>
                                             <li @click="editVehicle(vehicle)">Editar</li>
-                                            <li @click="deleteVehicle(vehicle)">Deletar</li>
+                                            <li @click="deleteVehicle(vehicle.plate)">Deletar</li>
                                         </ul>
                                     </div>
                                 </transition>
@@ -73,6 +73,7 @@
             v-if="vehicleEditRegistrationIsOpen" 
             :vehicle="vehicleToEdit" 
             :allVehicles="vehicles"
+            :allActivities="activities"
             @onClose="closeVehicleEditRegistration"
             >
         </VehicleEditRegistration>
@@ -83,6 +84,7 @@
         ></VehicleDetails>
         <MyPagination v-if="vehicles.length >= 8"></MyPagination>
     </div>
+    <span v-if="successMsg !== ''" class="success-message">{{ successMsg }}</span>
 </template>
 
 <script>
@@ -107,27 +109,32 @@ import MyPagination from './MyPagination.vue';
         data() {
             return {
                 plateInput: '',
-                vehicles: [/* { plate: "ABC-1234", brand: "BMW", model: "Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
+                activities: [],
+                vehicles: [],
+                /* 
+                VALORES DE EXEMPLO
+                { plate: "ABC-1234", brand: "BMW", model: "Série 3 Sport", year: 2021, color: "Preta", purpose: "Uso pessoal", zero: true, confortLevel: 5, latitude: "-26.278385", longitude: "-48.865418" },
 
-{ plate: "WXS-3321", brand: "Chevrolet", model: "Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, latitude: "-1.22", longitude: "-57.66" },
+                { plate: "WXS-3321", brand: "Chevrolet", model: "Onix", year: 2021, color: "Prata", purpose: "Veículo para locação", zero: true, confortLevel: 4, latitude: "-1.22", longitude: "-57.66" },
 
-{ plate: "KLS-1278", brand: "Peugeot", model: "208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, latitude: "-30.96", longitude: "-39.71" },
+                { plate: "KLS-1278", brand: "Peugeot", model: "208", year: 2024, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 3, latitude: "-30.96", longitude: "-39.71" },
 
-{ plate: "ZHG-9585", brand: "Audi", model: "A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-27.63", longitude: "-35.16" },
+                { plate: "ZHG-9585", brand: "Audi", model: "A3", year: 2024, color: "Vermelho", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-27.63", longitude: "-35.16" },
 
-{ plate: "NBY-6617", brand: "Jeep", model: "Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, latitude: "-2.49", longitude: "-46.70" },
+                { plate: "NBY-6617", brand: "Jeep", model: "Renegade", year: 2023, color: "Vermelho", purpose: "Veículo para locação", zero: true, confortLevel: 5, latitude: "-2.49", longitude: "-46.70" },
 
-{ plate: "HAN-0693", brand: "Ford", model: "Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, latitude: "-15.32", longitude: "-41.78" },
+                { plate: "HAN-0693", brand: "Ford", model: "Fiesta", year: 2019, color: "Prata", purpose: "Uso pessoal", zero: false, confortLevel: 3, latitude: "-15.32", longitude: "-41.78" },
 
-{ plate: "YMO-2420", brand: "Fiat", model: "Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-14.92", longitude: "-56.12" },
+                { plate: "YMO-2420", brand: "Fiat", model: "Pulse", year: 2020, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 5, latitude: "-14.92", longitude: "-56.12" },
 
-{ plate: "MKU-2327", brand: "Ford", model: "KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, latitude: "-23.41", longitude: "-52.95" } */],
-                /*  */
+                { plate: "MKU-2327", brand: "Ford", model: "KA", year: 2019, color: "Preta", purpose: "Veículo para locação", zero: false, confortLevel: 2, latitude: "-23.41", longitude: "-52.95" } 
+                */
                 optionsIsOpen: null,
                 vehicleEditRegistrationIsOpen: false,
                 vehicleDetailsIsOpen: false,
                 vehicleToEdit: null,
-                vehicleToSeeDetails: null
+                vehicleToSeeDetails: null,
+                successMsg: ''
             };
         },
 
@@ -137,11 +144,6 @@ import MyPagination from './MyPagination.vue';
             },
 
             erase(){
-                /* if(this.brandOptionsIsOpen)
-                    this.brandsToggleDropdown();
-                if(this.purposesIsOpen)
-                    this.purposesToggleDropdown(); */
-                
                 this.$refs.brandsDropdownRef.clearBrandsSelection();
                 this.$refs.purposesDropdownRef.clearPurposeSelection();
                 this.clearPlateInput();
@@ -181,9 +183,15 @@ import MyPagination from './MyPagination.vue';
                 this.closeOptions();
             },
 
-            deleteVehicle(vehicle) {
-                console.log("Deletando:", vehicle);
+            deleteVehicle(vehiclePlate) {
+                this.vehicles = this.vehicles.filter(vehicle => vehicle.plate !== vehiclePlate);
+                localStorage.setItem('vehicles', JSON.stringify(this.vehicles));
+                const today = new Date().toLocaleDateString('pt-BR');
+                const timeNow = new Date().toLocaleTimeString('pt-BR', { hour12: false });
+                this.activities.push({ type: 'delete', plate: vehiclePlate, date: today, time: timeNow });
+                localStorage.setItem('activityHistory', JSON.stringify(this.activities));
                 this.closeOptions();
+                this.showSuccessMsg('Veículo deletado com sucesso!');
             },
 
             openVehicleEditRegistration(){
@@ -198,11 +206,20 @@ import MyPagination from './MyPagination.vue';
             closeVehicleDetails(){
                 this.vehicleDetailsIsOpen = false;
                 this.vehicleToSeeDetails = null;
+            },
+
+            showSuccessMsg(message) {
+                this.successMsg = message;
+
+                setTimeout(() => {
+                    this.successMsg = '';
+                }, 5000);
             }
         },
 
         mounted(){
             this.vehicles = JSON.parse(localStorage.getItem('vehicles')) !== null ? JSON.parse(localStorage.getItem('vehicles')) : [];
+            this.activities = JSON.parse(localStorage.getItem('activityHistory')) !== null ? JSON.parse(localStorage.getItem('activityHistory')) : [];
         }
     }
 </script>

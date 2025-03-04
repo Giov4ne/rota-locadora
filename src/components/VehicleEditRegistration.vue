@@ -1,6 +1,5 @@
 <template>
     <div class="form-background"></div>
-    
     <form v-if="isEditing" @submit.prevent="validateForm" id="vehicle-edit-registration-form">
         <div class="form-header">
             <h2 class="form-header-title">Edição de Veículo</h2>
@@ -98,7 +97,7 @@
             <input type="submit" id="register-vehicle-form-btn" value="Salvar">
         </div>
     </form>
-    <span v-if="errorMsg !== ''" id="error-message">{{ errorMsg }}</span>
+    <span v-if="errorMsg !== ''" class="error-message">{{ errorMsg }}</span>
 </template>
 
 <script>
@@ -118,7 +117,8 @@ import StarRating from './StarRating.vue';
                 type: Object,
                 default: () => null // Se não for passado, será tratado como null
             },
-            allVehicles: Array
+            allVehicles: Array,
+            allActivities: Array
         },
         computed: {
             isEditing(){
@@ -162,7 +162,9 @@ import StarRating from './StarRating.vue';
 
                 vehicles: this.allVehicles,
 
-                errorMsg: ''
+                errorMsg: '',
+
+                activities: this.allActivities
             };
         },
         methods:{
@@ -249,19 +251,32 @@ import StarRating from './StarRating.vue';
 
             editVehicle(){
                 const index = this.getVehicleToEditIndex;
-                if(index !== -1)
+                if(index !== -1){
                     this.vehicles[index] = { ...this.vehicles[index], ...this.vehicleToEdit };
-                else
+                    localStorage.setItem('vehicles', JSON.stringify(this.vehicles));
+                    this.addActivity('edit', this.vehicles[index].plate);
+                    this.close();
+                } else{
                     this.showError('Veículo não encontrado!');
+                }
             },
 
             registerVehicle(){
                 if(!this.vehicleExists){
                     this.vehicles.push(this.newVehicle);
                     localStorage.setItem('vehicles', JSON.stringify(this.vehicles));
+                    this.addActivity('register', this.newVehicle.plate);
+                    this.close();
                 } else{
                     this.showError('Essa placa já foi cadastrada!');
                 }
+            },
+
+            addActivity(activityType, vehiclePlate){
+                const today = new Date().toLocaleDateString('pt-BR');
+                const timeNow = new Date().toLocaleTimeString('pt-BR', { hour12: false });
+                this.activities.push({ type: activityType, plate: vehiclePlate, date: today, time: timeNow });
+                localStorage.setItem('activityHistory', JSON.stringify(this.activities));
             }
         }
     }
@@ -393,18 +408,5 @@ import StarRating from './StarRating.vue';
         margin-right: 8px;
         cursor: pointer;
         transform: scale(1.3);
-    }
-
-    #error-message{
-        background-color: #E8363B;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        color: #fff;
-        position: fixed;
-        top: 7%;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 3;
     }
 </style>
